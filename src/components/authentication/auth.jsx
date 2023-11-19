@@ -87,7 +87,7 @@ const Auth = (props) => {
       );
       const response = await axios.post(`${api}/auth/local/register`, {
         name: fName + " " + lName,
-        username: fName + " " + lName,
+        username: fName + " " + lName,   
         email: Email,
         password: Password,
         userRole: "Faculty",
