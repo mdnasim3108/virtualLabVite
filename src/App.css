@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+.App {
+    text-align: center;
+}
+
+.App-logo {
+    height: 40vmin;
+    pointer-events: none;
+}
+
+.custom-select {
+    -webkit-appearance: none;
+    /* Webkit (Safari, Chrome) */
+    -moz-appearance: none;
+    /* Firefox */
+    appearance: none;
+    /* Standard browsers */
+    background-image: none;
+    /* Remove default arrow icon */
+    background-color: transparent;
+    /* Make background transparent */
+    padding-right: 20px;
+    /* Add some padding for a custom indicator */
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .App-logo {
+        animation: App-logo-spin infinite 20s linear;
+    }
+}
+
+.App-header {
+    background-color: #282c34;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+}
+
+.App-link {
+    color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+        position: absolute;
+    }
+}
+
+.ant-menu {
+    background-color: black !important;
+}
+
+
+/* .ant-menu-item-selected {
+    background-color: white !important;
+} */
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0;
+}
