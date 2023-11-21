@@ -163,7 +163,7 @@ const Experiments = () => {
                         style: { visibility: "hidden" },
                     }}
                     scroll={{
-                        y: 500,
+                        y: 400,
                     }}
                 />
                 <Button className="mt-5" onClick={() => {
