@@ -33,7 +33,7 @@ import "react-toastify/dist/ReactToastify.min.css";
 
 const SignUp = (props) => {
   const toastifySuccess = () => {
-    toast.success("Successfully SignedIn !!", {
+    toast.success("Successfully SignedUp !!", {
       position: "top-right",
       autoClose: 4000,
       hideProgressBar: false,
@@ -57,56 +57,9 @@ const SignUp = (props) => {
     });
   };
 
-  const otpSuccess = () => {
-    toast.success("Phone Number Verified!!", {
-      position: "top-right",
-      autoClose: 4000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-  };
 
-  const otpFailure = () => {
-    toast.error("Please Check The OTP!!", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-  };
-
-  const phoneNumberSuccess = () => {
-    toast.success("OTP Sent Successfully!!", {
-      position: "top-right",
-      autoClose: 4000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-  };
-  const phoneNumberError = () => {
-    toast.error("Enter correct Phone Number!!", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-  };
+  
+  
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [value, setValue] = useState("");
@@ -148,7 +101,7 @@ const SignUp = (props) => {
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log();
+     
       const userCredentials = await createUserWithEmailAndPassword(
         auth,
         email,
@@ -164,6 +117,7 @@ const SignUp = (props) => {
         userRole:"student"
       });
       toastifySuccess();
+      props.showlogin()
       
     } catch (error) {
       console.log(error);

@@ -5,6 +5,8 @@ import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { DownOutlined, UpOutlined } from "@ant-design/icons";
 import userContext from "../../../contextStore/context";
 import { useNavigate, useParams } from "react-router";
+import { api as strapiApi } from "../../../constants";
+
 const Editor = () => {
   const navigate=useNavigate()
   const { id } = useParams("id");
@@ -20,7 +22,6 @@ const Editor = () => {
     setSubmission,
   } = useContext(userContext);
  
- 
   const [api, contextHolder] = notification.useNotification();
   const openNotificationWithIcon = (type, message, description) => {
     api[type]({
@@ -28,13 +29,14 @@ const Editor = () => {
       description,
     });
   };  
+  const ExperimentIndex=experiments.findIndex(experiment => experiment.expNo==id)
 
   useEffect(()=>{
       if(experiments.length){
       const ExpIndex=experiments.findIndex(experiment => experiment.expNo==id)
       setSelected({name:experiments[ExpIndex].expTitle,no:+(experiments[ExpIndex].expNo)})
       }
-  },[experiments,selected])
+  },[experiments,id])
 
   useEffect(() => {
     if(progress.progressData.length){
@@ -65,8 +67,10 @@ const Editor = () => {
   });
   const [code, setCode] = useState({ content: "", id: "" });
   const [out, setOut] = useState("");
+
   window.onmessage = function (e) {
     if (e.data && e.data.language) {
+      console.log(e)
       if (e.data.result) {
         setOut(e.data.result.output);
       }
@@ -85,10 +89,10 @@ const Editor = () => {
       return;
     }
     if (submission.Experiments.length) {
-      
+      console.log(code.content)
       axios
         .put(
-          `http://localhost:1337/api/submissions/${submission.id}?populate=*`,
+          `${strapiApi}/submissions/${submission.id}?populate=*`,
           {
             data: {
               Experiments: [
@@ -119,8 +123,9 @@ const Editor = () => {
           );
         });
     } else {
+
       axios
-        .post(`http://localhost:1337/api/submissions?populate=*`, {
+        .post(`${strapiApi}/submissions?populate=*`, {
           data: {
             roll: user.roll,
             Experiments: [
@@ -154,7 +159,7 @@ const Editor = () => {
       <div className="w-full h-[93%] relative">
         {contextHolder}
         <p className="text-lg font-semi-bold absolute top-[1.4vh] left-[30%]">
-          {selected.name}
+          {experiments[ExperimentIndex]?.expTitle}
         </p>
 
         <iframe
@@ -206,8 +211,8 @@ const Editor = () => {
           save progress
         </Button>
         <Dropdown menu={{ items }} >
-          <Button className="">
-            {selected.name}
+          <Button  className="">
+          {experiments[ExperimentIndex]?.expTitle}
             <UpOutlined className=" w-5 ml-1 mb-1 text-black" />  
           </Button>
         </Dropdown>

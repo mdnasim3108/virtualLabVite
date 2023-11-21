@@ -16,6 +16,7 @@ import { MailOutlined } from "@ant-design/icons";
 import { AiOutlineLock } from "react-icons/ai";
 import userContext from "../../contextStore/context";
 import { useContext } from "react";
+import { api } from "../../constants";
 const Login = (props) => {
   const { setUser,fetchUser } = useContext(userContext);
   const cookies=new Cookies();
@@ -64,7 +65,7 @@ const Login = (props) => {
           // setCookie("user", email, { path: "/", expires: tomorrow });
           cookies.set('user',email, {path: '/', expires: new Date(Date.now()+(2 * 24 * 60 * 60 * 1000))})
           const res = await axios.get(
-            `http://localhost:1337/api/users?filters[email][$eqi]=${email}&populate=*`
+            `${api}/users?filters[email][$eqi]=${email}&populate=*`
           );
           console.log(res.data);
           fetchUser()

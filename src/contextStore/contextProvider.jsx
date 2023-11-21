@@ -56,7 +56,7 @@ const ContextProvider = (props) => {
       else updated = [...updated, { experiment: no.toString(), codeId }];
       console.log(updated);
       const res = await axios.put(
-        `http://localhost:1337/api/progresses/${progress.id}?populate=*`,
+        `${api}/progresses/${progress.id}?populate=*`,
         { data: { progress: updated } }
       );
       setProgress({
@@ -65,7 +65,7 @@ const ContextProvider = (props) => {
       });
     } else {
       axios
-        .post(`http://localhost:1337/api/progresses?populate=*`, {
+        .post(`${api}/progresses?populate=*`, {
           data: {
             roll: user.roll,
             progress: [
@@ -115,7 +115,7 @@ const ContextProvider = (props) => {
   };
 
   const fetchStudents=()=>{
-    axios.get("http://localhost:1337/api/users?populate=*").then((res)=>setStudents(res.data.filter((user)=>user.role.name!=="Faculty")))
+    axios.get(`${api}/users?populate=*`).then((res)=>setStudents(res.data.filter((user)=>user.role.name!=="Faculty")))
 
   }
 

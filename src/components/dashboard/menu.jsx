@@ -18,8 +18,6 @@ const SideMenu = (props) => {
   const navigate = useNavigate();
   const cookies = new Cookies()
   const { keys, setKeys, progress, selected, selectedProgressId } = useContext(userContext)
-  console.log(progress)
-  console.log(selected)
 
   const items = [
     { label: "Dashboard", key: "/dashboard", icon: <AppstoreOutlined /> },

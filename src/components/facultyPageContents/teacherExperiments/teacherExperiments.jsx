@@ -41,7 +41,7 @@ const Experiments = () => {
             openNotificationWithIcon('error', 'All fields required', 'Fill the required fields to add the experiment')
             return
         }
-        axios.post(`http://localhost:1337/api/experiments`, { data: formData }).then((res) => {
+        axios.post(`${strapiApi}/experiments`, { data: formData }).then((res) => {
             console.log(formData)
             console.log(res)
             setExperiments([...experiments, {

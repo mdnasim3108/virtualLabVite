@@ -2,13 +2,14 @@ import axios from "axios";
 import { Table } from "antd";
 import { useContext, useEffect, useState } from "react";
 import userContext from "../../../contextStore/context";
+import { api } from "../../../constants";
 const Grades=()=>{
     const [gradings,setGradings]=useState([])
     const {user,experiments}=useContext(userContext)
   
     useEffect(()=>{
-      axios.get(`http://localhost:1337/api/submissions?filters[roll][$eqi]=${user.roll}&populate=*`).then((res)=>setGradings(
-        res.data.data[0].attributes.Experiments.filter(obj => obj.output).map((exp)=>{
+      axios.get(`${api}/submissions?filters[roll][$eqi]=${user.roll}&populate=*`).then((res)=>setGradings(
+        res.data.data[0]?.attributes.Experiments.filter(obj => obj.output).map((exp)=>{
           const index=experiments.findIndex(experiment=>experiment.expNo==exp.ExpNo)
           const experimentName=experiments[index].expTitle
           return {

@@ -8,12 +8,13 @@ import { ToastContainer } from "react-toastify";
 import { useState,useContext } from "react";
 import userContext from "./contextStore/context";
 import axios from "axios";
+import { api } from "./constants";
 const  App =  ()=>{
   const {setUser}=useContext(userContext)
   const [showHome,setShowHome]=useState(false)
   const [loading,setLoading]=useState(false)
   const loginHandler=async(email)=>{
-    const res=await axios.get(`http://localhost:1337/api/users?filters[email][$eqi]=${email}&populate=*`)
+    const res=await axios.get(`${api}/users?filters[email][$eqi]=${email}&populate=*`)
     console.log(res.data)
     setUser(res.data[0])
     setShowHome(true)

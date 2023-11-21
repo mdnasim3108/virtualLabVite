@@ -241,7 +241,7 @@ const Auth = (props) => {
               login={(email) => props.login(email)}
             />
           ) : (
-            <SignUp click={showModal} />
+            <SignUp click={showModal} showlogin={()=>setShowLog(true)}/>
           )}
         </div>
       </div>

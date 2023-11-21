@@ -48,7 +48,9 @@ const Experiments = () => {
               navigate(`/editor/${exp.expNo}`)
               
               
-            }} className={`underline cursor-pointer ${submittedExperiments.includes(+(exp.expNo))?"opacity-[0.5] cursor-not-allowed":"opacity-[1] cursor-pointer"}`}>
+            }} className={`underline cursor-pointer ${submittedExperiments.includes(+(exp.expNo))?"opacity-[0.5]":"opacity-[1] cursor-pointer"}`}
+            style={{cursor:submittedExperiments.includes(+(exp.expNo))?"not-allowed":"pointer"}}
+            >
               do Experiment
             </p>
           ),

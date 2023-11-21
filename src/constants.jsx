@@ -1,2 +1,2 @@
-export const api="http://localhost:1337/api" 
+export const api="https://viprostrapi.onrender.com/api" 
 //constants files approaches here
