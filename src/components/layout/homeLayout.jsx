@@ -1,6 +1,6 @@
 import Header from "../dashboard/header";
 import SideMenu from "../dashboard/menu";
-import { Space } from "antd";
+import { Space,Spin } from "antd";
 import PrivateRoute from "../../privateRoute";
 
 import {
@@ -101,7 +101,11 @@ const HomeLayout = (props) => {
         </div>
 
       </div>
-    </PrivateRoute>:<p>loading</p>
+    </PrivateRoute>:<div className="w-full flex justify-center items-center h-screen ">
+    <Spin tip="Loading" size="large">
+        <div className="content p-[50px] rounded-[5px]" />
+      </Spin>
+    </div>
 
 };
 export default HomeLayout;
