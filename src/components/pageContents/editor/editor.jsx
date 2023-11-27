@@ -168,7 +168,7 @@ const Editor = () => {
                 ExpNo: selected.no,
                 code: code.content,
                 outputContent: out,
-                Submitted_Date: new Date(),
+                Submitted_Date: new Date(), 
               },
             ],
           },

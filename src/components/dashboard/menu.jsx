@@ -9,7 +9,7 @@ import { Cookies } from "react-cookie";
 const SideMenu = (props) => {
   const navigate = useNavigate();
   const cookies = new Cookies()
-  const { keys, setKeys } = useContext(userContext)
+  const { keys, setKeys,resetProcess } = useContext(userContext)
 
   return (  
     <div className="h-[calc(100vh-50px)] flex flex-col justify-between relative">
@@ -25,6 +25,7 @@ const SideMenu = (props) => {
       >
       </Menu>
       <Button icon={<LogoutOutlined />} onClick={() => {
+        resetProcess()
         cookies.remove("user")
         navigate("/")
       }}

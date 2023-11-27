@@ -193,6 +193,7 @@ const ContextProvider = (props) => {
     fetchUser,
     announcements,
     setAnnouncements,
+    resetProcess
   };
 
   useEffect(() => {
