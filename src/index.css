@@ -18,3 +18,14 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+::-webkit-scrollbar-thumb {
+  width: 0;
+  height: 0;
+  display: none; /* You can also use 'transparent' or a color to match your background */
+}

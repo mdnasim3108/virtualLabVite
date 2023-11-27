@@ -16,9 +16,11 @@ import { api } from "../../constants";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
+import PrimaryButton from "../UI/Primarybutton";
 const Auth = (props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showInvalid, setShowInvalid] = useState(false);
+  const [loading, setLoading] = useState(false);
   const toastifySuccess = () => {
     toast.success("Successfully SignedIn !!", {
       position: "top-right",
@@ -74,20 +76,21 @@ const Auth = (props) => {
     e.preventDefault();
     try {
       const { fName, lName, Email, Password, key } = formData;
-      console.log(import.meta.env)
-      if(key!==import.meta.env.VITE_SECRET_KEY){
-        setShowInvalid(true)
-        return
+      console.log(import.meta.env);
+      if (key !== import.meta.env.VITE_SECRET_KEY) {
+        setShowInvalid(true);
+        return;
       }
-
+      setLoading(true);
       const userCredentials = await createUserWithEmailAndPassword(
         auth,
         Email,
         Password
       );
+      console.log(userCredentials);
       const response = await axios.post(`${api}/auth/local/register`, {
         name: fName + " " + lName,
-        username: fName + " " + lName,   
+        username: fName + " " + lName,
         email: Email,
         password: Password,
         userRole: "Faculty",
@@ -99,13 +102,14 @@ const Auth = (props) => {
         Password: "",
         key: "",
       });
-      setShowLog(true)
-      setShowInvalid(false)
+      setShowLog(true);
+      setShowInvalid(false);
       handleCancel();
-
+      setLoading(false);
       toastifySuccess();
     } catch (error) {
-      toastifyFailure()
+      setLoading(false);
+      toastifyFailure();
       console.log(error);
     }
   };
@@ -118,7 +122,7 @@ const Auth = (props) => {
           placeholder="Enter Your First Name"
           id="fName"
           onChange={changeHandler}
-          required
+          required={true}
           value={formData.fName}
         />
       </div>
@@ -169,21 +173,25 @@ const Auth = (props) => {
       {showInvalid && (
         <p className="text-red-500 text-sm ">The secret key is Invalid</p>
       )}
+
+      <div className="mt-5 w-full text-center">
+        <button disabled={loading} className={` ${loading?"bg-gray-300 text-white":"hover:bg-violet-700 border border-violet-700 hover:text-white"}  transition-all duration-300 ease-in-out  font-medium rounded-lg text-sm w-[8rem] py-2 me-2 mb-2 focus:outline-none`}
+         onClick={onSubmit}>
+          {loading ? "Signing Up.." : "Sign Up"}
+        </button>
+        
+      </div>
     </form>
   );
   return (
     <>
-    <ToastContainer />
+      <ToastContainer />
       <Modal
         title={<p className="text-center">Register as Faculty</p>}
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
-        footer={[
-          <Button key="back" className="mx-auto" onClick={onSubmit}>
-            Sign Up
-          </Button>,
-        ]}
+        footer={[]}
       >
         {addModalContent}
       </Modal>
@@ -241,7 +249,7 @@ const Auth = (props) => {
               login={(email) => props.login(email)}
             />
           ) : (
-            <SignUp click={showModal} showlogin={()=>setShowLog(true)}/>
+            <SignUp click={showModal} showlogin={() => setShowLog(true)} />
           )}
         </div>
       </div>

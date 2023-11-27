@@ -36,6 +36,22 @@ const Announcements = () => {
                 Description
             </Button>
         },
+        {
+            key: "4",
+            name: "Prof.R devi",
+            subject: "Netsim manual",
+            description: <Button onClick={showModal}>
+                Description
+            </Button>
+        },
+        {
+            key: "5",
+            name: "Prof.R devi",
+            subject: "Netsim manual",
+            description: <Button onClick={showModal}>
+                Description
+            </Button>
+        },
 
     ];
     const columns = [
@@ -58,7 +74,7 @@ const Announcements = () => {
             width: "20%",
         },
     ];
-    return <div>
+    return <div className="">
         <Modal title="Postponement of exams" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}
             footer={[
                 <Button key="back" onClick={handleCancel}>
@@ -74,7 +90,7 @@ const Announcements = () => {
                 style: { visibility: "hidden" },
             }}
             scroll={{
-                y: 450,
+                y: 200,
             }}
         />
     </div>

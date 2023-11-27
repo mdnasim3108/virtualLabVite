@@ -4,8 +4,9 @@ import Announcements from "./announcements"
 import { useContext } from "react"
 import userContext from "../../../contextStore/context"
 import { Spin } from "antd"
-const Dashboard = () => {
-    const { user } = useContext(userContext)
+const StudentDashboard = () => {
+    const { user,announcements } = useContext(userContext)
+    console.log(announcements)
     return <Spin spinning={user === undefined || user === null}>
         <div className="w-full h-full bg-[#f0f2f5]">
             <div className="flex justify-around w-full py-2 px-10">
@@ -18,4 +19,4 @@ const Dashboard = () => {
         </div>
     </Spin>
 }
-export default Dashboard
+export default StudentDashboard;

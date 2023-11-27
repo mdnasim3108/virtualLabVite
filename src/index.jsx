@@ -10,6 +10,7 @@ import {
 import ContextProvider from "./contextStore/contextProvider";
 import Auth from "./components/authentication/auth";
 import Dashboard from "./components/facultyPageContents/dashboard/Dashboard";
+import StudentDashboard from "./components/pageContents/dashboard/Dashboard";
 import Classmates from "./components/pageContents/classmates/Classmates";
 import Courses from "./components/pageContents/courses/Courses";
 import Experiments from "./components/pageContents/experiments/Experiments";
@@ -22,108 +23,162 @@ import Editor from "./components/pageContents/editor/editor";
 import TeacherDash from "./components/facultyPageContents/teacherDash";
 import ExperimentSubmissions from "./components/facultyPageContents/experimentSubmissions/experimentSubmissions";
 import TeacherExperiments from "./components/facultyPageContents/teacherExperiments/teacherExperiments";
-// import TDashboard from "./components/facultyPageContentspageContents/dashboard/Dashboard";
-
-// import TeacherDashboard from "./components/facultyPageContents/teacherDash";
+import PrivateRoute from "./privateRoute";
+import Students from "./components/facultyPageContents/Students/Students";
+import FacultyAnnouncements from "./components/facultyPageContents/announcements/Announcements";
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Auth />,
   },
   {
-    path: "/dashboard",
+    path: "/facultyDashboard",
     element: (
+      <PrivateRoute>
       <HomeLayout>
         <Dashboard />
       </HomeLayout>
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/studentDashboard",
+    element: (
+      <PrivateRoute>
+      <HomeLayout>
+        <StudentDashboard />
+      </HomeLayout>
+      </PrivateRoute>
     ),
   },
   {
     path: "/classmates",
     element: (
+      <PrivateRoute>
       <HomeLayout>
         <Classmates />
       </HomeLayout>
+      </PrivateRoute>
     ),
   },
   {
     path: "/courses",
     element: (
+      <PrivateRoute>
       <HomeLayout>
         <Courses />
       </HomeLayout>
+      </PrivateRoute>
     ),
   },
   {
     path: "/experiments",
     element: (
+      <PrivateRoute>
       <HomeLayout>
         <Experiments />
       </HomeLayout>
+      </PrivateRoute>
     ),
   },
   {
     path: "/profile",
     element: (
+      <PrivateRoute>
       <HomeLayout>
         <Profile />
       </HomeLayout>
+      </PrivateRoute>
     ),
   },
   {
     path: "/submissions",
     element: (
+      <PrivateRoute>
        <HomeLayout>
         <Submissions />
       </HomeLayout> 
+      </PrivateRoute>
     ),
   },
   {
     path: "/teachers",
     element: (
+      <PrivateRoute>
       <HomeLayout>
         <Teachers />
       </HomeLayout>
+      </PrivateRoute>
     ),
   },
   {
     path: "/grades",
     element: (
+    <PrivateRoute>
       <HomeLayout>
         <Grades />
       </HomeLayout>
+      </PrivateRoute>
     ),
   },
   {
     path: "/editor/:id",
     element: (
+      <PrivateRoute>
       <HomeLayout>
         <Editor />
       </HomeLayout>
+      </PrivateRoute>
     ),
   },
   {
     path: "/teacherDash",
     element: (
+      <PrivateRoute>
       <HomeLayout>
         <TeacherDash />
       </HomeLayout>
+      </PrivateRoute>
     ),
   },
   {
     path: "/experimentSubmissions",
     element: (
+      <PrivateRoute>
       <HomeLayout>
         <ExperimentSubmissions />
       </HomeLayout>
+      </PrivateRoute>
     ),
   },
   {
     path: "/teacherExperiments",
     element: (
+      <PrivateRoute>
       <HomeLayout>
         < TeacherExperiments />
       </HomeLayout>
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/Students",
+    element: (
+      <PrivateRoute>
+      <HomeLayout>
+        < Students />
+      </HomeLayout>
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/Announcements",
+    element: (
+      <PrivateRoute>
+      <HomeLayout>
+        < FacultyAnnouncements />
+      </HomeLayout>
+      </PrivateRoute>
     ),
   },
   

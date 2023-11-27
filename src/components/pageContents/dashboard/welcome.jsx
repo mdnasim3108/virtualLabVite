@@ -4,7 +4,7 @@ import { useContext } from "react"
 import userContext from "../../../contextStore/context"
 const Welcome = () => {
     const { user } = useContext(userContext)
-    console.log(user)
+    
     return user ? <div className="w-[55%]  h-[30vh] border rounded-lg px-10 py-7 flex flex-col justify-between shadow z-10 bg-gradient-to-r from-[#064dff] via-[#0c67ff] to-[#0c67ff] relative">
         <p className="text-[#9bc1ff] text-sm">April 30 ,Tuesday</p>
         <Space direction="vertical">

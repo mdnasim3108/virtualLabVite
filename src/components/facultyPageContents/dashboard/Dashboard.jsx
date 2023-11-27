@@ -1,4 +1,3 @@
-
 import Welcome from "./welcome"
 import ProfileData from "./profileData"
 import Announcements from "./announcements"

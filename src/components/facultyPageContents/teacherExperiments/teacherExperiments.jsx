@@ -42,8 +42,7 @@ const Experiments = () => {
             return
         }
         axios.post(`${strapiApi}/experiments`, { data: formData }).then((res) => {
-            console.log(formData)
-            console.log(res)
+
             setExperiments([...experiments, {
                 key: +(res.data.data.attributes.ExperimentNo),
                 expTitle: res.data.data.attributes.Experiment_Name,

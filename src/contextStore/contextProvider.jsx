@@ -15,22 +15,22 @@ const ContextProvider = (props) => {
   });
   const [progress, setProgress] = useState({ id: "", progressData: [] });
   const [selectedProgressId, setSelectedProgressId] = useState("");
-  const [submission, setSubmission] = useState({ id: "", Experiments: [] }); 
-  const [students,setStudents]=useState([])
-
-  const resetProcess=()=>{
-    setUser(null)
-    setExperiments([])
-    setKeys([window.location.pathname])
+  const [submission, setSubmission] = useState({ id: "", Experiments: [] });
+  const [students, setStudents] = useState([]);
+  const [announcements, setAnnouncements] = useState([]);
+  const resetProcess = () => {
+    setUser(null);
+    setExperiments([]);
+    setKeys([window.location.pathname]);
     setSelected({
       name: "client server communication",
       no: 1,
-    })
-    setProgress({ id: "", progressData: [] })
-    setSelectedProgressId("")
-    setSubmission({ id: "", Experiments: [] })
-    setStudents([])
-  }
+    });
+    setProgress({ id: "", progressData: [] });
+    setSelectedProgressId("");
+    setSubmission({ id: "", Experiments: [] });
+    setStudents([]);
+  };
   useEffect(() => {
     if (selected.no && progress.length) {
       const index = progress.findIndex((el) => selected.no === +el.experiment);
@@ -38,15 +38,20 @@ const ContextProvider = (props) => {
     }
   }, [selected, progress]);
 
-  useEffect(()=>{
-    if(experiments.length && submission.Experiments.length){
-      const pendingExperiments=experiments.filter(experiment => !(submission.Experiments.map((el)=>el.ExpNo).includes(+(experiment.expNo))))
+  useEffect(() => {
+    if (experiments.length && submission.Experiments.length) {
+      const pendingExperiments = experiments.filter(
+        (experiment) =>
+          !submission.Experiments.map((el) => el.ExpNo).includes(
+            +experiment.expNo
+          )
+      );
       setSelected({
-          name: pendingExperiments[0].expTitle,
-          no: pendingExperiments[0].expNo,
-      })
+        name: pendingExperiments[0].expTitle,
+        no: pendingExperiments[0].expNo,
+      });
     }
-  },[experiments,submission])
+  }, [experiments, submission]);
 
   const progressUpdateHandler = async (no, codeId) => {
     let updated = [...progress.progressData];
@@ -85,8 +90,6 @@ const ContextProvider = (props) => {
     }
   };
 
-  
-
   const fetchProgress = async (roll) => {
     const res = await axios.get(
       `${api}/progresses?filters[roll][$eqi]=${roll}&populate=*`
@@ -103,9 +106,9 @@ const ContextProvider = (props) => {
     axios
       .get(`${api}/submissions?filters[roll][$eqi]=${roll}&populate=*`)
       .then((res) => {
-        if (res.data.data.length){
-          console.log(res.data.data[0].attributes.Experiments)
-          
+        if (res.data.data.length) {
+          console.log(res.data.data[0].attributes.Experiments);
+
           setSubmission({
             id: res.data.data[0].id,
             Experiments: res.data.data[0].attributes.Experiments,
@@ -114,39 +117,60 @@ const ContextProvider = (props) => {
       });
   };
 
-  const fetchStudents=()=>{
-    axios.get(`${api}/users?populate=*`).then((res)=>setStudents(res.data.filter((user)=>user.role.name!=="Faculty")))
+  const fetchStudents = () => {
+    axios
+      .get(`${api}/users?filters[userRole][$eqi]=student&populate=*`)
+      .then((res) => setStudents(res.data));
+  };
 
-  }
+  const fetchExperiments = () => {
+    axios.get(`${api}/experiments?populate=*`).then((res) =>
+      setExperiments(
+        res.data.data.map((exp) => {
+          return {
+            key: exp.id,
+            expNo: exp.attributes.ExperimentNo,
+            expTitle: exp.attributes.Experiment_Name,
+            expDesc: exp.attributes.Description,
+            Due: exp.attributes.Due_Date,
+          };
+        })
+      )
+    );
+  };
 
-  const fetchExperiments=()=>{
-    axios.get(`${api}/experiments?populate=*`).then((res)=>setExperiments(res.data.data.map((exp)=>{
-      return {
-        key: exp.id,
-                    expNo: exp.attributes.ExperimentNo,
-                    expTitle: exp.attributes.Experiment_Name,
-                    expDesc: exp.attributes.Description,
-                    Due: exp.attributes.Due_Date,
-                    
+  const fetchAnnouncements = () => {
+    axios.get(`${api}/announcements?populate=*`).then((res) => {
+      if (res.data.data.length) {
+        setAnnouncements(
+          res.data.data.map((announcement) => {
+            return {
+              key: announcement.id,
+              subject: announcement.attributes.subject,
+              description: announcement.attributes.description,
+              AnnouncedDate: announcement.attributes.date,
+              facultyName:announcement.attributes.facultyName
+            };
+          })
+        );
       }
-    }))
-    )
-  }
+    });
+  };
 
   const fetchUser = async () => {
     const res = await axios.get(
       `${api}/users?filters[email][$eqi]=${cookies.get("user")}&populate=*`
     );
-    fetchExperiments()
+    fetchExperiments();
+    fetchAnnouncements();
     console.log(res.data);
-      setUser(res.data[0]);
-      console.log(res.data[0])
-      if (!(res.data[0].userRole === "Faculty")) {
+    setUser(res.data[0]);
+    console.log(res.data[0]);
+    if (!(res.data[0].userRole === "Faculty")) {
       fetchProgress(res.data[0].roll);
       fetchSubmitted(res.data[0].roll);
-      }
-    else{
-      fetchStudents()
+    } else {
+      fetchStudents();
     }
   };
 
@@ -166,7 +190,9 @@ const ContextProvider = (props) => {
     submission,
     setSubmission,
     students,
-    fetchUser
+    fetchUser,
+    announcements,
+    setAnnouncements,
   };
 
   useEffect(() => {

@@ -56,7 +56,7 @@ const SignUp = (props) => {
       theme: "light",
     });
   };
-
+  const [loading, setLoading] = useState(false);
 
   
   
@@ -101,7 +101,7 @@ const SignUp = (props) => {
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
-     
+     setLoading(true)
       const userCredentials = await createUserWithEmailAndPassword(
         auth,
         email,
@@ -117,9 +117,12 @@ const SignUp = (props) => {
         userRole:"student"
       });
       toastifySuccess();
+      setLoading(false)
       props.showlogin()
       
     } catch (error) {
+      setLoading(false)
+
       console.log(error);
       toastifyFailure();
     }
@@ -301,8 +304,13 @@ const SignUp = (props) => {
           className="logFormBottom mt-2 flex"
           style={{ justifyContent: "flex-start" }}
         >
-          <button className="loginButton font-bold text-xl text-white mr-4">
-            Sign Up
+          <button
+          disabled={loading}
+            className={`loginButton font-bold text-xl text-white mr-[5rem] py-[1.5rem] w-[15rem] ${
+              loading ? "bg-gray-400" : "bg-violet-500"
+            } transition-all duration-300 ease-in-out`}
+          >
+              {loading ? <p className="text-xl">SIGNING UP</p> : <p className="text-xl">SIGNUP</p>}
           </button>
           <p
               className="fgPass text-lg mt-[1.6rem] hover:text-violet-700 transition-all duration-150 ease-in-out cursor-pointer"

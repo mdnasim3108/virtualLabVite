@@ -1,6 +1,9 @@
 import { Table, Button, Modal } from "antd"
-import { useState } from "react";
+import { useContext, useState } from "react";
+import userContext from "../../../contextStore/context"
 const Announcements = () => {
+    const {announcements}=useContext(userContext)
+    console.log(announcements)
     const [isModalOpen, setIsModalOpen] = useState(false);
     const showModal = () => {
         setIsModalOpen(true);
@@ -11,33 +14,19 @@ const Announcements = () => {
     const handleCancel = () => {
         setIsModalOpen(false);
     };
-    const dataSource = [
-        {
-            key: "1",
-            name: "mohamed nasim",
-            subject: "postponement of exams",
-            description: <Button onClick={showModal}>
+    const [selected,setSelected]=useState({subject:"",desc:""})
+    const announcementData=announcements.map(announcement=>{
+        return {
+            key: announcement.key,
+            name: announcement.facultyName,
+            subject: announcement.subject,
+            description: <Button onClick={()=>{
+                showModal()
+                setSelected({subject:announcement.subject,desc:announcement.description})}}>
                 Description
             </Button>
-        },
-        {
-            key: "2",
-            name: "shameer",
-            subject: "CompileX integration",
-            description: <Button onClick={showModal}>
-                Description
-            </Button>
-        },
-        {
-            key: "3",
-            name: "Prof.R devi",
-            subject: "Netsim manual",
-            description: <Button onClick={showModal}>
-                Description
-            </Button>
-        },
-
-    ];
+        }
+    })
     const columns = [
         {
             title: "name",
@@ -59,22 +48,23 @@ const Announcements = () => {
         },
     ];
     return <div>
-        <Modal title="Postponement of exams" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}
+        <Modal title={selected.subject} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}
             footer={[
                 <Button key="back" onClick={handleCancel}>
                     close
                 </Button>]}
-        >
-            <p>The descriptions of the announcement modal will be displayed here.</p>
+        >   
+
+            <p>{selected.desc}</p>
         </Modal>
         <Table
-            dataSource={dataSource}
+            dataSource={announcementData}
             columns={columns}
             className="w-[95%] mx-auto relative bottom-6" pagination={{
                 style: { visibility: "hidden" },
             }}
             scroll={{
-                y: 450,
+                y: 200,
             }}
         />
     </div>
