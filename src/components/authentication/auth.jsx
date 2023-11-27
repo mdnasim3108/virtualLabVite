@@ -16,10 +16,13 @@ import { api } from "../../constants";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
+import { useContext } from "react";
+import userContext from "../../contextStore/context";
 const Auth = (props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showInvalid, setShowInvalid] = useState(false);
   const [loading, setLoading] = useState(false);
+  const {user}=useContext(userContext)
   const toastifySuccess = () => {
     toast.success("Successfully SignedIn !!", {
       position: "top-right",
@@ -66,8 +69,11 @@ const Auth = (props) => {
   const navigate = useNavigate();
   const cookies = new Cookies();
   useEffect(() => {
-    if (cookies.get("user")) navigate("/dashboard");
-  }, []);
+    if (cookies.get("user") && user){
+      if(user.userRole=="student") navigate("/studentDashboard")
+      else navigate("/facultyDashboard")
+    } 
+  }, [user]);
   const [showLog, setShowLog] = useState(true);
   const [showForgot, setShowForgot] = useState(false);
   const auth = getAuth();

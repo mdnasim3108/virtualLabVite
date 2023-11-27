@@ -1,6 +1,5 @@
 import { Table, Button, Modal } from "antd";
 import { useContext, useEffect, useState } from "react";
-import PrimaryButton from "../../UI/Primarybutton";
 import { LuMegaphone } from "react-icons/lu";
 import { Input } from "antd";
 import userContext from "../../../contextStore/context";
@@ -200,10 +199,13 @@ const FacultyAnnouncements = () => {
         }}
       />
       <div className="w-full text-center">
-        <PrimaryButton onClick={showModal} className="">
+        <button
+          className="text-white bg-blue-700 hover:bg-blue-800  font-medium rounded text-sm px-5 py-2.5 me-2 mb-2  focus:outline-none"
+          onClick={showModal}
+        >
           Announce something
           <LuMegaphone className="inline text-lg ml-3" />
-        </PrimaryButton>
+        </button>
       </div>
     </div>
   );
