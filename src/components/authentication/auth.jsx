@@ -16,7 +16,6 @@ import { api } from "../../constants";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
-import PrimaryButton from "../UI/Primarybutton";
 const Auth = (props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showInvalid, setShowInvalid] = useState(false);
