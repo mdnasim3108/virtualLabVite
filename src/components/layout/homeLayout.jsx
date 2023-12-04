@@ -34,12 +34,12 @@ const HomeLayout = (props) => {
       icon: <CheckSquareOutlined />,
     },
     // {label:"courses",key:"/courses",icon:<BookOutlined/>},
-    { label: "profile", key: "/profile", icon: <UserOutlined /> },
-    {
-      label: "classMates",
-      key: "/classMates",
-      icon: <FontAwesomeIcon icon={faUsers} />,
-    },
+    // { label: "profile", key: "/profile", icon: <UserOutlined /> },
+    // {
+    //   label: "classMates",
+    //   key: "/classMates",
+    //   icon: <FontAwesomeIcon icon={faUsers} />,
+    // },
     {
       label: "Teachers",
       key: "/teachers",

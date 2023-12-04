@@ -31,8 +31,8 @@ const Login = (props) => {
     });
   };
 
-  const toastifyFailure = () => {
-    toast.error("Invalid Email or Password !", {
+  const toastifyFailure = (msg) => {
+    toast.error(msg, {
       position: "top-right",
       autoClose: 5000,
       hideProgressBar: false,
@@ -78,8 +78,7 @@ const Login = (props) => {
         })
         .catch((error) => {
           setLoading(false);
-          console.log(error);
-          toastifyFailure();
+          toastifyFailure(error.message);
         });
     }
   };

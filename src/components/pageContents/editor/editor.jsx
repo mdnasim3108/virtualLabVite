@@ -26,6 +26,7 @@ const Editor = () => {
     api[type]({
       message,
       description,
+      placement: "top",
     });
   };
   const ExperimentIndex = experiments.findIndex(
@@ -54,11 +55,11 @@ const Editor = () => {
     } else setcodeid("12345");
   }, [progress, id]);
 
-  const [loading, setLoading] = useState({save:false,submit:false});
+  const [loading, setLoading] = useState({ save: false, submit: false });
   const submittedExperiments = submission.Experiments.map((el) => el.ExpNo);
 
   const items = experiments
-    .filter((el) => !submittedExperiments.includes(+el.expNo))
+    // .filter((el) => !submittedExperiments.includes(+el.expNo))
     .map((exp) => {
       return {
         key: exp.key,
@@ -87,7 +88,7 @@ const Editor = () => {
     }
   };
 
-  const saveProgressHandler = async() => {
+  const saveProgressHandler = async () => {
     {
       if (code.id === "") {
         openNotificationWithIcon(
@@ -97,7 +98,7 @@ const Editor = () => {
         );
         return;
       }
-      setLoading({submit:false,save:true})
+      setLoading({ submit: false, save: true });
       var iFrame = document.getElementById("oc-editor");
       iFrame.contentWindow.postMessage(
         {
@@ -112,7 +113,7 @@ const Editor = () => {
         "Progress saved",
         "Your progress has been saved sucessfully"
       );
-        setLoading({submit:false,save:false})
+      setLoading({ submit: false, save: false });
     }
   };
 
@@ -125,9 +126,43 @@ const Editor = () => {
       );
       return;
     }
-    setLoading({submit:true,save:false})
+    setLoading({ submit: true, save: false });
     if (submission.Experiments.length) {
-      console.log(code.content);
+      if (submission.Experiments.map((e) => e.ExpNo).includes(+id)) {
+        const submissionIndex = submission.Experiments.findIndex(
+          (e) => e.ExpNo == id
+        );
+        submission.Experiments[submissionIndex] = {
+          record: null,
+          output: null,
+          viva: null,
+          total: null,
+          ExpNo: selected.no,
+          code: code.content,
+          outputContent: out,
+          Submitted_Date: new Date(),
+        };
+        axios
+          .put(`${strapiApi}/submissions/${submission.id}?populate=*`, {
+            data: {
+              Experiments:submission.Experiments,
+            },
+          })
+          .then((res) => {
+            setSubmission({
+              id: res.data.data.id,
+              Experiments: res.data.data.attributes.Experiments,
+            });
+            openNotificationWithIcon(
+              "success",
+              "Work updated",
+              "Your work had been updated successfully"
+            );
+
+            setLoading({ submit: false, save: false });
+          });
+      }
+      else{
       axios
         .put(`${strapiApi}/submissions/${submission.id}?populate=*`, {
           data: {
@@ -156,8 +191,10 @@ const Editor = () => {
             "Work submitted",
             "Your work had been submitted sucessfully"
           );
-          setLoading({submit:false,save:false})
+
+          setLoading({ submit: false, save: false });
         });
+      }
     } else {
       axios
         .post(`${strapiApi}/submissions?populate=*`, {
@@ -168,7 +205,7 @@ const Editor = () => {
                 ExpNo: selected.no,
                 code: code.content,
                 outputContent: out,
-                Submitted_Date: new Date(), 
+                Submitted_Date: new Date(),
               },
             ],
           },
@@ -183,7 +220,7 @@ const Editor = () => {
             "Work submitted",
             "Your work had been submitted sucessfully"
           );
-          setLoading({submit:false,save:false})
+          setLoading({ submit: false, save: false });
         });
     }
   };
@@ -228,7 +265,7 @@ const Editor = () => {
         </button>
 
         <Dropdown menu={{ items }}>
-          <Button className="bg-gray-600 h-[2.2rem] pt-[6px] me-2 text-white hover:text-white">
+          <Button className="bg-gray-600 h-[2.2rem] pt-[6px] me-2 text-white font-medium">
             {experiments[ExperimentIndex]?.expTitle}
             <UpOutlined className=" w-5 ml-1 relative bottom-[2px] text-white" />
           </Button>

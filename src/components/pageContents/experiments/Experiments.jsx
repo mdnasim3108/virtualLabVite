@@ -42,14 +42,15 @@ const Experiments = () => {
           ...exp,
           expLink: (
             <p onClick={() => {
-              if(submittedExperiments.includes(+(exp.expNo))) return 
+              // if(submittedExperiments.includes(+(exp.expNo))) return 
               setSelected({ name: exp.expTitle, no: +(exp.expNo) })
               setKeys(["/editor"]) 
               navigate(`/editor/${exp.expNo}`)
               
               
-            }} className={`underline cursor-pointer ${submittedExperiments.includes(+(exp.expNo))?"opacity-[0.5]":"opacity-[1] cursor-pointer"}`}
-            style={{cursor:submittedExperiments.includes(+(exp.expNo))?"not-allowed":"pointer"}}
+            }}
+            className={`underline cursor-pointer`}
+            // style={{cursor:submittedExperiments.includes(+(exp.expNo))?"not-allowed":"pointer"}}
             >
               do Experiment
             </p>

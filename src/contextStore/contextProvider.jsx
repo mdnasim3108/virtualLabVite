@@ -64,6 +64,7 @@ const ContextProvider = (props) => {
         `${api}/progresses/${progress.id}?populate=*`,
         { data: { progress: updated } }
       );
+      console.log(res)
       setProgress({
         id: progress.id,
         progressData: res.data.data.attributes.progress,
@@ -81,15 +82,16 @@ const ContextProvider = (props) => {
             ],
           },
         })
-        .then((res) =>
+        .then((res) =>{
+        console.log(res)
           setProgress({
             id: res.data.data.id,
             progressData: res.data.data.attributes.progress,
           })
+        }
         );
     }
   };
-
   const fetchProgress = async (roll) => {
     const res = await axios.get(
       `${api}/progresses?filters[roll][$eqi]=${roll}&populate=*`
