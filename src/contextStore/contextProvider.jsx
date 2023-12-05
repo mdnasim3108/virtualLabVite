@@ -39,16 +39,16 @@ const ContextProvider = (props) => {
   }, [selected, progress]);
 
   useEffect(() => {
-    if (experiments.length && submission.Experiments.length) {
-      const pendingExperiments = experiments.filter(
-        (experiment) =>
-          !submission.Experiments.map((el) => el.ExpNo).includes(
-            +experiment.expNo
-          )
-      );
+    if (experiments.length) {
+      // const pendingExperiments = experiments.filter(
+      //   (experiment) =>
+      //     !submission.Experiments.map((el) => el.ExpNo).includes(
+      //       +experiment.expNo
+      //     )
+      // );
       setSelected({
-        name: pendingExperiments[0].expTitle,
-        no: pendingExperiments[0].expNo,
+        name: experiments[0].expTitle,
+        no: experiments[0].expNo,
       });
     }
   }, [experiments, submission]);
