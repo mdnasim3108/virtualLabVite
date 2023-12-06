@@ -64,7 +64,7 @@ const ContextProvider = (props) => {
         `${api}/progresses/${progress.id}?populate=*`,
         { data: { progress: updated } }
       );
-      console.log(res)
+      console.log(res);
       setProgress({
         id: progress.id,
         progressData: res.data.data.attributes.progress,
@@ -82,14 +82,13 @@ const ContextProvider = (props) => {
             ],
           },
         })
-        .then((res) =>{
-        console.log(res)
+        .then((res) => {
+          console.log(res);
           setProgress({
             id: res.data.data.id,
             progressData: res.data.data.attributes.progress,
-          })
-        }
-        );
+          });
+        });
     }
   };
   const fetchProgress = async (roll) => {
@@ -122,7 +121,10 @@ const ContextProvider = (props) => {
   const fetchStudents = () => {
     axios
       .get(`${api}/users?filters[userRole][$eqi]=student&populate=*`)
-      .then((res) => setStudents(res.data));
+      .then((res) => {
+        console.log(res.data)
+        setStudents(res.data);
+      });
   };
 
   const fetchExperiments = () => {
@@ -151,7 +153,7 @@ const ContextProvider = (props) => {
               subject: announcement.attributes.subject,
               description: announcement.attributes.description,
               AnnouncedDate: announcement.attributes.date,
-              facultyName:announcement.attributes.facultyName
+              facultyName: announcement.attributes.facultyName,
             };
           })
         );
@@ -195,7 +197,7 @@ const ContextProvider = (props) => {
     fetchUser,
     announcements,
     setAnnouncements,
-    resetProcess
+    resetProcess,
   };
 
   useEffect(() => {

@@ -36,6 +36,7 @@ const ExperimentSubmissions = () => {
       ),
     };
   });
+  
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -141,7 +142,7 @@ const ExperimentSubmissions = () => {
           };
           return updatedSubmission;
         });
-        handleCancel()
+        handleCancel();
       });
   };
   const addModalContent = (
@@ -235,13 +236,15 @@ const ExperimentSubmissions = () => {
   useEffect(() => {
     if (submission.length && experiments.length) {
       const completedStudents = submission.filter((el) =>
-        el.finishedExperiments.map((el) => el.ExpNo).includes(selected.no)
+        el.finishedExperiments.map((el) => el.ExpNo).includes(+selected.no)
       );
+      console.log(submission);
+      console.log(selected.no);
       if (completedStudents.length) {
         setData(
           completedStudents.map((el) => {
             const id = el.finishedExperiments.findIndex(
-              (el) => el.ExpNo === selected.no
+              (el) => el.ExpNo == selected.no
             );
             const exp = el.finishedExperiments[id];
             const expIndex = experiments.findIndex(
@@ -329,7 +332,7 @@ const ExperimentSubmissions = () => {
         columns={columns}
         className="w-[98%] mx-auto"
         pagination={{
-          style: { visibility: "hidden" },
+          position: ["bottomCenter"],
         }}
         scroll={{
           y: 450,

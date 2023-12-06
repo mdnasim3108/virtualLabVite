@@ -33,7 +33,7 @@ const ProfileData = () => {
         { key: "Semester", value: "VI" },
     ]
 
-    return user ? <div>
+    return user ? <div className="relative top-5 left-[20%]">
         <Card cover={cover} style={{
             width: 300,
         }}>

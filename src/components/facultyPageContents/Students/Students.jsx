@@ -57,7 +57,7 @@ const Students = () => {
           columns={columns}
           className="w-[95%] mx-auto"
           pagination={{
-            style: { visibility: "hidden" },
+            position: ["bottomCenter"],
           }}
           scroll={{
             y: 450,

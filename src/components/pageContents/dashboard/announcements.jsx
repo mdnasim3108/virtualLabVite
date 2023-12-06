@@ -47,7 +47,7 @@ const Announcements = () => {
             width: "20%",
         },
     ];
-    return <div>
+    return <div className="w-full ">
         <Modal title={selected.subject} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}
             footer={[
                 <Button key="back" onClick={handleCancel}>
@@ -60,7 +60,7 @@ const Announcements = () => {
         <Table
             dataSource={announcementData}
             columns={columns}
-            className="w-[95%] mx-auto relative bottom-6" pagination={{
+            className=" relative bottom-6" pagination={{
                 style: { visibility: "hidden" },
             }}
             scroll={{
