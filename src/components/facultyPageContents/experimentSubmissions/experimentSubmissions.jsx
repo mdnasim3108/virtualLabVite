@@ -6,7 +6,7 @@ import userContext from "../../../contextStore/context";
 import { DownOutlined } from "@ant-design/icons";
 import { jsPDF } from "jspdf";
 const ExperimentSubmissions = () => {
-  const { experiments, selected, setSelected, students } =
+  const { experiments, selected, setSelected, students,submissionsData:submission,setSubmissionsData } =
     useContext(userContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedData, setSelectedData] = useState({
@@ -16,7 +16,7 @@ const ExperimentSubmissions = () => {
     submissionId: "",
   });
   const [data, setData] = useState([]);
-  const [submission, setSubmission] = useState([]);
+  // const [submission, setSubmission] = useState([]);
   const [formData, setFormData] = useState({
     observation: "",
     output: "",
@@ -134,7 +134,7 @@ const ExperimentSubmissions = () => {
         data: { Experiments: updated },
       })
       .then((res) => {
-        setSubmission((prev) => {
+        setSubmissionsData((prev) => {
           const updatedSubmission = [...prev];
           updatedSubmission[studentIndex] = {
             ...updatedSubmission[studentIndex],
@@ -219,19 +219,19 @@ const ExperimentSubmissions = () => {
 
     doc.save(`${roll}.pdf`);
   };
-  useEffect(() => {
-    axios.get(`${api}/submissions?populate=*`).then((res) =>
-      setSubmission(
-        res.data.data.map((el) => {
-          return {
-            id: el.id,
-            roll: el.attributes.roll,
-            finishedExperiments: el.attributes.Experiments,
-          };
-        })
-      )
-    );
-  }, []);
+  // useEffect(() => {
+  //   axios.get(`${api}/submissions?populate=*`).then((res) =>
+  //     setSubmission(
+  //       res.data.data.map((el) => {
+  //         return {
+  //           id: el.id,
+  //           roll: el.attributes.roll,
+  //           finishedExperiments: el.attributes.Experiments,
+  //         };
+  //       })
+  //     )
+  //   );
+  // }, []);
 
   useEffect(() => {
     if (submission.length && experiments.length) {

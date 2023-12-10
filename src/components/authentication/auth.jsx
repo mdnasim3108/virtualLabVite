@@ -10,7 +10,7 @@ import codeLottie from "../../assets/codeLottie.json";
 import ForgotForm from "./forgotForm";
 import { Cookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
-import { Modal, Button, Input } from "antd";
+import { Modal, Button, Input,Spin } from "antd";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { api } from "../../constants";
 import axios from "axios";
@@ -22,7 +22,7 @@ const Auth = (props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showInvalid, setShowInvalid] = useState(false);
   const [loading, setLoading] = useState(false);
-  const {user}=useContext(userContext)
+  const { user } = useContext(userContext);
   const toastifySuccess = () => {
     toast.success("Successfully SignedIn !!", {
       position: "top-right",
@@ -69,10 +69,10 @@ const Auth = (props) => {
   const navigate = useNavigate();
   const cookies = new Cookies();
   useEffect(() => {
-    if (cookies.get("user") && user){
-      if(user.userRole=="student") navigate("/studentDashboard")
-      else navigate("/facultyDashboard")
-    } 
+    if (cookies.get("user") && user) {
+      if (user.userRole == "student") navigate("/studentDashboard");
+      else navigate("/facultyDashboard");
+    }
   }, [user]);
   const [showLog, setShowLog] = useState(true);
   const [showForgot, setShowForgot] = useState(false);
@@ -180,15 +180,21 @@ const Auth = (props) => {
       )}
 
       <div className="mt-5 w-full text-center">
-        <button disabled={loading} className={` ${loading?"bg-gray-300 text-white":"hover:bg-violet-700 border border-violet-700 hover:text-white"}  transition-all duration-300 ease-in-out  font-medium rounded-lg text-sm w-[8rem] py-2 me-2 mb-2 focus:outline-none`}
-         onClick={onSubmit}>
+        <button
+          disabled={loading}
+          className={` ${
+            loading
+              ? "bg-gray-300 text-white"
+              : "hover:bg-violet-700 border border-violet-700 hover:text-white"
+          }  transition-all duration-300 ease-in-out  font-medium rounded-lg text-sm w-[8rem] py-2 me-2 mb-2 focus:outline-none`}
+          onClick={onSubmit}
+        >
           {loading ? "Signing Up.." : "Sign Up"}
         </button>
-        
       </div>
     </form>
   );
-  return (
+  return !cookies.get("user") ? (
     <>
       <ToastContainer />
       <Modal
@@ -259,6 +265,12 @@ const Auth = (props) => {
         </div>
       </div>
     </>
+  ) : (
+    <div className="w-full flex justify-center items-center h-screen ">
+      <Spin tip="Loading" size="large">
+        <div className="content p-[50px] rounded-[5px]" />
+      </Spin>
+    </div>
   );
 };
 export default Auth;

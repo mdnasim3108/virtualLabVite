@@ -18,6 +18,7 @@ const ContextProvider = (props) => {
   const [submission, setSubmission] = useState({ id: "", Experiments: [] });
   const [students, setStudents] = useState([]);
   const [announcements, setAnnouncements] = useState([]);
+  const [submissionsData,setSubmissionsData]=useState([])
   const resetProcess = () => {
     setUser(null);
     setExperiments([]);
@@ -91,6 +92,21 @@ const ContextProvider = (props) => {
         });
     }
   };
+
+  const fetchSubmissionsData=()=>{
+    axios.get(`${api}/submissions?populate=*`).then((res) =>{
+    setSubmissionsData(
+      res.data.data.map((el) => {
+        return {
+          id: el.id,
+          roll: el.attributes.roll,
+          finishedExperiments: el.attributes.Experiments,
+        };
+      })
+    )
+    }
+    ) 
+  }
   const fetchProgress = async (roll) => {
     const res = await axios.get(
       `${api}/progresses?filters[roll][$eqi]=${roll}&populate=*`
@@ -174,6 +190,7 @@ const ContextProvider = (props) => {
       fetchProgress(res.data[0].roll);
       fetchSubmitted(res.data[0].roll);
     } else {
+      fetchSubmissionsData()
       fetchStudents();
     }
   };
@@ -198,6 +215,8 @@ const ContextProvider = (props) => {
     announcements,
     setAnnouncements,
     resetProcess,
+    submissionsData,
+    setSubmissionsData
   };
 
   useEffect(() => {
