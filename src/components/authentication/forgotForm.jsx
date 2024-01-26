@@ -19,14 +19,14 @@ const ForgotForm = (props) => {
     }
   };
   return (
-    <div className="lg:w-[50%] w-full h-full flex flex-col items-center justify-center">
+    <div className="lg:w-[50%] w-full h-full flex flex-col items-center justify-center my-10 lg:m-0">
       <div className="lg:w-[70%] w-full">
-        <form onSubmit={forgotSubmitHandler} className="">
+        <form onSubmit={forgotSubmitHandler}>
           <label className="text-lg text-center">
             Enter the registered Email
           </label>
           <input
-            className={`pl-[4rem] py-5 w-full block text-lg  border-2 mt-5   overflow-visible  border-violet-700 focus:border-green-500`}
+            className={`lg:pl-[4rem] lg:py-5 pl-[2rem] py-3 w-full block text-lg  border-2 mt-5   overflow-visible  border-violet-700 focus:border-green-500`}
             placeholder="Email"
             type="email"
             required
@@ -36,7 +36,7 @@ const ForgotForm = (props) => {
 
           <button
             type="submit"
-            className="bg-violet-700 p-4 rounded  text-xl text-white"
+            className="bg-violet-700 lg:p-4 p-2 rounded  lg:text-xl text-lg text-white"
           >
             Send password reset link
           </button>

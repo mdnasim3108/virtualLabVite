@@ -206,16 +206,15 @@ const Auth = (props) => {
       >
         {addModalContent}
       </Modal>
-      <div className="authContainer h-screen">
-        <div className=" flex justify-between py-7 pl-20 w-full h-[20vh] pr-[15rem] ">
-          <div>
-            <img src={gctLogo} className="w-[5rem] compLog mr-3 inline-block" />
-            <p className="text-2xl inline-block font-roboto">
+      <div className="authContainer w-full lg:h-screen">
+      <div className=" flex justify-between items-center lg:flex-row flex-col   py-7 lg:pl-20 w-full lg:h-[20vh] lg:pr-[15rem] ">
+      <div className="flex items-center justify-center">
+            <img src={gctLogo} className="lg:w-[5rem] w-[3rem]  mr-3 " />
+            <p className="lg:text-2xl text-lg  font-roboto">
               GCT Virtual Programming Laboratory
             </p>
           </div>
-          {/* <h2 className="text-3xl tracking-wide">NetzeroThink</h2> */}
-          <div className="w-[10rem] h-[2rem] sm:w-[18rem] sm:h-[3rem] mt-1 sm:mt-8 rounded-[30px] flex justify-between bg-violet-700 items-center px-[2px] relative">
+          <div className="w-[14rem] h-[2.5rem] lg:w-[18rem] lg:h-[3rem] lg:mt-0 mt-7 rounded-[30px] flex justify-between bg-violet-700 items-center px-[2px] relative">
             <button
               className={`text-white font-bold rounded-[30px] h-[90%] w-[50%]`}
               onClick={() => setShowLog(true)}
@@ -237,8 +236,8 @@ const Auth = (props) => {
             </button>
           </div>
         </div>
-        <div className="flex justify-between lg:flex-row flex-col lg:items-start items-center  px-[3rem]  w-full h-[80vh] ">
-          <div className=" lg:w-[50%] w-full  h-[90%] relative bottom-5">
+        <div className="flex justify-between lg:flex-row flex-col-reverse lg:items-start items-center  lg:px-[3rem] px-[1rem]  w-full lg:h-[80vh] ">
+          <div className=" lg:w-[50%] w-full  lg:h-[90%] relative bottom-5">
             {/* <img src={loginImg} className="logCartImg w-[2rem] h-[2rem]" alt =""/> */}
             <Player
               autoplay

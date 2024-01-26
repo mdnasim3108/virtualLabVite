@@ -166,30 +166,30 @@ const SignUp = (props) => {
 
   return (
     <div className="loginForm lg:w-[50%] w-full  h-full">
-      <form onSubmit={onSubmit} className="w-full h-[95%]  flex flex-col justify-center">
+      <form onSubmit={onSubmit} className="w-full lg:h-[95%]  flex flex-col justify-center">
         
-        <div className="flex justify-between h-[12%] mb-[2%]">
+      <div className="flex justify-between lg:h-[12%] lg:mb-[2%]">
           <div className="w-[49.5%]  h-full">
-            <UserOutlined className="absolute ml-[2rem] mt-[1rem] text-lg text-gray-600" />
+          <UserOutlined className="absolute lg:ml-[2rem] ml-[1rem] mt-[1rem] text-lg text-gray-600" />
             <input
               id="firstName"
               placeholder="First Name"
               name="FirstName"
               value={firstName}
-              className="pl-[4rem]    mb-[1rem]  border-2  border-violet-700 focus:border-green-500 authip w-full h-full"
+              className="lg:pl-[4rem] pl-[2.8rem] py-3  mb-[1rem]  border-2  border-violet-700 focus:border-green-500 authip w-full h-full"
               style={{ fontSize: "1.1rem" }}
               onChange={formChange}
               required
             />
           </div>
           <div className="w-[49.5%] inline-block h-full">
-            <UserOutlined className="absolute ml-[2rem] mt-[1rem] text-lg text-gray-600" />
+          <UserOutlined className="absolute lg:ml-[2rem] ml-[1rem] mt-[1rem] text-lg text-gray-600" />
             <input
               id="lastName"
               placeholder="Last Name"
               name="LastName"
               value={lastName}
-              className="pl-[4rem]   border-2  border-violet-700 focus:border-green-500 mb-[1rem] authip w-full h-full"
+              className="lg:pl-[4rem] pl-[2.8rem]  py-3  border-2  border-violet-700 focus:border-green-500 mb-[1rem] authip w-full h-full"
               style={{ fontSize: "1.1rem" }}
               onChange={formChange}
               required
@@ -197,31 +197,31 @@ const SignUp = (props) => {
           </div>
         </div>
 
-        <div className="w-full h-[12%] mb-[2%]">
+        <div className="w-full lg:h-[12%] lg:mb-[2%]">
           <FontAwesomeIcon
             icon={faHashtag}
-            className="absolute ml-[2rem] mt-[1.7rem] text-lg text-gray-600"
+            className="absolute lg:ml-[2rem] ml-[1rem] mt-[1.2rem] text-lg text-gray-600"
           />
           <input
             id="roll"
             value={roll}
             name="roll"
             placeholder="Enter Your Roll number"
-            className="pl-[4rem]  block border-2  border-violet-700 focus:border-green-500 mb-[1rem] authip w-full h-full"
+            className="lg:pl-[4rem] pl-[2.8rem]  py-3 block border-2  border-violet-700 focus:border-green-500 mb-[1rem] authip w-full h-full"
             style={{ fontSize: "1.1rem" }}
             onChange={formChange}
             required
           />
         </div>
 
-        <div className="w-full h-[12%] mb-[2%]">
-          <MailOutlined className="absolute ml-[2rem] mt-[1.1rem] text-lg text-gray-600" />
+        <div className="w-full lg:h-[12%] lg:mb-[2%]">
+        <MailOutlined className="absolute lg:ml-[2rem] ml-[1rem] mt-[1.1rem] text-lg text-gray-600" />
           <input
             id="email"
             value={email}
             name="Email"
             placeholder="Enter Your Email"
-            className="pl-[4rem]  block border-2  border-violet-700 focus:border-green-500 mb-[1rem] authip w-full h-full"
+            className="lg:pl-[4rem] pl-[2.8rem]  py-3 block border-2  border-violet-700 focus:border-green-500 mb-[1rem] authip w-full h-full"
             style={{ fontSize: "1.1rem" }}
             onChange={formChange}
             required
@@ -230,22 +230,22 @@ const SignUp = (props) => {
         <div className=" h-0 flex justify-end pr-[2rem] ">
           {!showPassword ? (
             <AiFillEye
-              className="text-[1.5rem] text-violet-800 relative top-[1.55rem] cursor-pointer"
-              onClick={() => {
+            className="text-[1.5rem] text-violet-800 relative lg:top-[1.3rem] top-[1rem] cursor-pointer"
+            onClick={() => {
                 setShowPassword((prev) => !prev);
               }}
             />
           ) : (
             <AiFillEyeInvisible
-              className="text-[1.5rem] text-violet-800 relative top-[1.55rem] cursor-pointer"
-              onClick={() => {
+            className="text-[1.5rem] text-violet-800 relative lg:top-[1.3rem] top-[1rem] cursor-pointer"
+            onClick={() => {
                 setShowPassword((prev) => !prev);
               }}
             />
           )}
         </div>
-        <div className="w-full h-[12%] mb-[2%]">
-          <AiOutlineLock className="absolute ml-[2rem] mt-[1.3rem] text-2xl text-gray-600" />
+        <div className="w-full lg:h-[12%] lg:mb-[2%]">
+          <AiOutlineLock className="absolute lg:ml-[2rem] ml-[1rem] mt-[1rem] text-2xl text-gray-600" />
           <input
             id="password"
             name="Password"
@@ -253,13 +253,13 @@ const SignUp = (props) => {
             value={password}
             minLength="6"
             placeholder="Enter Your Password"
-            className="pl-[4rem]  block border-2  border-violet-700 focus:border-green-500 mb-[1rem] authip w-full h-full"
+            className="lg:pl-[4rem] pl-[2.8rem]  py-3 block border-2  border-violet-700 focus:border-green-500 mb-[1rem] authip w-full h-full"
             style={{ fontSize: "1.1rem" }}
             onChange={formChange}
             required
           />
         </div>
-        <div className="w-full h-[12%] mb-[2%]">
+        <div className="w-full lg:h-[12%] lg:mb-[2%]">
           {/* <FontAwesomeIcon
               icon={faCheck}
               className="absolute ml-[2rem] mt-[1.7rem] text-xl text-red-600"
@@ -284,13 +284,13 @@ const SignUp = (props) => {
             >
               Passwords don't match
             </p> */}
-          <GrGroup className="absolute ml-[2rem] mt-[1.6rem] text-lg text-gray-300" />
+          <GrGroup className="absolute lg:ml-[2rem] ml-[1rem] mt-[1rem] text-lg text-gray-300" />
           <div className=" h-0 flex justify-end pr-[2rem]">
             <DownOutlined className="text-[1.3rem] text-violet-800 relative top-[1.4rem] cursor-pointer" />
           </div>
           <select
             id="batch"
-            class=" custom-select authip border-2  border-violet-700 focus:border-green-500 text-gray-500 text-sm  focus:ring-blue-500   pl-[4rem]  dark:focus:ring-blue-500 dark:focus:border-blue-500 inline w-full h-full"
+            className=" custom-select py-3 authip border-2  border-violet-700 focus:border-green-500 text-gray-500 text-sm  focus:ring-blue-500   lg:pl-[4rem] pl-[2.8rem]   dark:focus:ring-blue-500 dark:focus:border-blue-500 inline w-full h-full"
             style={{ fontSize: "1.1rem" }}
             onChange={formChange}
           >
@@ -301,19 +301,19 @@ const SignUp = (props) => {
           </select>
         </div>
         <div
-          className="logFormBottom mt-2 flex"
+          className="logFormBottom lg:mt-2 mt-7 flex items-center"
           style={{ justifyContent: "flex-start" }}
         >
           <button
           disabled={loading}
-            className={`loginButton font-bold text-xl text-white mr-[5rem] py-[1.5rem] w-[15rem] ${
+            className={`loginButton font-bold text-xl text-white mr-4 py-[1.5rem] lg:w-[15rem] w-[10rem] ${
               loading ? "bg-gray-400" : "bg-violet-500"
             } transition-all duration-300 ease-in-out`}
           >
-              {loading ? <p className="text-xl">SIGNING UP</p> : <p className="text-xl">SIGNUP</p>}
+              {loading ? <p className="lg:text-xl text-lg">SIGNING UP</p> : <p className="text-xl">SIGN UP</p>}
           </button>
           <p
-              className="fgPass text-lg mt-[1.6rem] hover:text-violet-700 transition-all duration-150 ease-in-out cursor-pointer"
+              className="fgPass text-lg  hover:text-violet-700 transition-all duration-150 ease-in-out cursor-pointer"
               onClick={props.click}
             >
               Register as Faculty

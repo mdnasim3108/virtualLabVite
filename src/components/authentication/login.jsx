@@ -112,8 +112,8 @@ const Login = (props) => {
     setFormIsValid(emailIsValid && passIsValid);
   }, [emailIsValid, passIsValid]);
   return (
-    <div className="logForm  pr-[3rem] mt-8 lg:w-[50%] w-full">
-      <h1 className="text-4xl font-bold">Welcome Back!</h1>
+    <div className="logForm  lg:pr-[3rem] mt-8 lg:w-[50%] w-full">
+    <h1 className="text-4xl font-bold">Welcome Back!</h1>
       <h3
         className="text-xl mt-[1rem] font-semibold mb-[3rem]"
         style={{ color: "darkgray" }}
@@ -121,7 +121,7 @@ const Login = (props) => {
         Login to continue
       </h3>
       <form onSubmit={formsubmitHandler} autoComplete="off" className="">
-        <MailOutlined className="absolute ml-[2rem] mt-[1.2rem] text-lg text-gray-600" />
+      <MailOutlined className="absolute lg:ml-[2rem] ml-[1rem] mt-[1.2rem] text-lg text-gray-600" />
         <input
           id="email"
           type="email"
@@ -129,7 +129,7 @@ const Login = (props) => {
           value={email}
           onChange={formChange}
           placeholder="Enter Your Email"
-          className={`pl-[4rem] py-5 block  border-2   overflow-visible authip w-[36.5rem] border-violet-700 focus:border-green-500 ${
+          className={`lg:pl-[4rem] pl-[2.8rem] lg:py-5 py-3 block  border-2   overflow-visible authip lg:w-[36.5rem] w-full border-violet-700 focus:border-green-500 ${
             emailIsValid ? "" : "focus:border-red-500"
           }`}
           style={{
@@ -144,7 +144,7 @@ const Login = (props) => {
         >
           Enter a valid email
         </p>
-        <AiOutlineLock className="absolute ml-[2rem] mt-[1.5rem] text-2xl text-gray-600" />
+        <AiOutlineLock className="absolute lg:ml-[2rem] ml-[1rem] lg:mt-[1.5rem] mt-[1rem] text-2xl text-gray-600" />
         <input
           id="password"
           type="password"
@@ -152,7 +152,7 @@ const Login = (props) => {
           value={password}
           onChange={formChange}
           placeholder="Enter Your Password"
-          className={`pl-[4rem] py-5 block border-2  border-violet-700 focus:border-green-500 authip w-[36.5rem] ${
+          className={`lg:pl-[4rem] pl-[2.8rem] lg:py-5 py-3 block border-2  border-violet-700 focus:border-green-500 authip lg:w-[36.5rem] w-full ${
             passIsValid ? "" : "focus:border-red-500"
           }`}
           style={{
@@ -166,10 +166,10 @@ const Login = (props) => {
         >
           Password must be atleast 6 characters
         </p>
-        <div className="logFormBottom mt-8 flex">
+        <div className="logFormBottom mt-8 flex items-center">
           <button
             disabled={loading}
-            className={`loginButton font-bold text-xl text-white mr-[5rem] py-[1.5rem] w-[15rem] ${
+            className={`loginButton font-bold text-xl text-white lg:mr-[5rem] py-[1.5rem] lg:w-[15rem] w-[10rem] ${
               loading ? "bg-gray-400" : "bg-violet-500"
             } transition-all duration-300 ease-in-out`}
           >
@@ -181,19 +181,14 @@ const Login = (props) => {
           </button>
           <ToastContainer />
           <p
-            className="fgPass text-lg mt-[1.6rem] hover:text-violet-700 transition-all duration-150 ease-in-out cursor-pointer"
+            className="fgPass text-lg  hover:text-violet-700 transition-all duration-150 ease-in-out cursor-pointer"
             onClick={props.forgot}
           >
             Forgot password?
           </p>
         </div>
       </form>
-      <div className="altLogin mt-[4rem] w-[35rem] flex">
-        {/* <div className="w-[17rem] h-[4rem] bg-blue-500 cursor-pointer relative bottom-2.5 flex py-[1rem] pr-[1rem] pl-[1rem] rounded" onClick={googleLogin}>
-              <img alt ="" src={google} className="w-[2rem] h-[2rem]"/>
-              <p className="text-white text-lg ml-[1rem]">Sign in with google</p>
-          </div> */}
-      </div>
+     
     </div>
   );
 };
