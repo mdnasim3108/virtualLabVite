@@ -169,14 +169,14 @@ const Login = (props) => {
         <div className="logFormBottom mt-8 flex items-center">
           <button
             disabled={loading}
-            className={`loginButton font-bold text-xl text-white lg:mr-[5rem] py-[1.5rem] lg:w-[15rem] w-[10rem] ${
+            className={`loginButton font-bold text-xl text-white lg:mr-[5rem] py-[1.5rem] lg:w-[15rem] w-[9rem] ${
               loading ? "bg-gray-400" : "bg-violet-500"
             } transition-all duration-300 ease-in-out`}
           >
             {loading ? (
-              <p className="text-xl">LOGGING IN</p>
+              <p className="lg:text-xl text-sm">LOGGING IN</p>
             ) : (
-              <p className="text-xl">LOGIN</p>
+              <p className="lg:text-xl text-sm">LOGIN</p>
             )}
           </button>
           <ToastContainer />

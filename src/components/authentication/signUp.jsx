@@ -107,6 +107,7 @@ const SignUp = (props) => {
         email,
         password
       );
+      
       const response = await axios.post(`${api}/auth/local/register`, {
         name: firstName + " " + lastName,
         username: firstName + " " + lastName,
@@ -306,11 +307,11 @@ const SignUp = (props) => {
         >
           <button
           disabled={loading}
-            className={`loginButton font-bold text-xl text-white mr-4 py-[1.5rem] lg:w-[15rem] w-[10rem] ${
+            className={`loginButton font-bold text-xl text-white mr-4 py-[1.5rem] lg:w-[15rem] w-[9rem] ${
               loading ? "bg-gray-400" : "bg-violet-500"
             } transition-all duration-300 ease-in-out`}
           >
-              {loading ? <p className="lg:text-xl text-lg">SIGNING UP</p> : <p className="text-xl">SIGN UP</p>}
+              {loading ? <p className="lg:text-xl text-sm">SIGNING UP</p> : <p className="lg:text-xl text-sm">SIGN UP</p>}
           </button>
           <p
               className="fgPass text-lg  hover:text-violet-700 transition-all duration-150 ease-in-out cursor-pointer"
