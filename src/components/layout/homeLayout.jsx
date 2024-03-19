@@ -14,7 +14,7 @@ import {
   EllipsisOutlined,
   WechatOutlined,
 } from "@ant-design/icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"; 
 import {
   faUsers,
   faChalkboardUser,
@@ -33,16 +33,9 @@ const HomeLayout = (props) => {
       key: "/submissions",
       icon: <CheckSquareOutlined />,
     },
-    // {label:"courses",key:"/courses",icon:<BookOutlined/>},
-    // { label: "profile", key: "/profile", icon: <UserOutlined /> },
-    // {
-    //   label: "classMates",
-    //   key: "/classMates",
-    //   icon: <FontAwesomeIcon icon={faUsers} />,
-    // },
     {
-      label: "Teachers",
-      key: "/teachers",
+      label: "Faculties",
+      key: "/faculties",
       icon: <FontAwesomeIcon icon={faChalkboardUser} />,
     },
     {
@@ -85,11 +78,11 @@ const HomeLayout = (props) => {
     //   key: "/teachers",
     //   icon: <WechatOutlined />,
     // },
-    // {
-    //   label: "Grades",
-    //   key: "/grades",
-    //   icon: <FontAwesomeIcon icon={faMarker} />,
-    // },
+    {
+      label: "Grades",
+      key: "/FacultyGradings",
+      icon: <FontAwesomeIcon icon={faMarker} />,
+    },
     // {
     //   label: "Editor",
     //   key: "/editor/12345",

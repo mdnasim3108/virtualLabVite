@@ -27,13 +27,12 @@ import {
 } from "firebase/auth";
 import { db } from "../../firebase-config";
 import { doc, setDoc } from "firebase/firestore";
-
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
-
+import Verify from "./verify";
 const SignUp = (props) => {
-  const toastifySuccess = () => {
-    toast.success("Successfully SignedUp !!", {
+  const toastifySuccess = (msg) => { 
+    toast.success(msg, {
       position: "top-right",
       autoClose: 4000,
       hideProgressBar: false,
@@ -44,8 +43,8 @@ const SignUp = (props) => {
       theme: "light",
     });
   };
-  const toastifyFailure = () => {
-    toast.error("Email already in use !!", {
+  const toastifyFailure = (msg) => {
+    toast.error(msg, {
       position: "top-right",
       autoClose: 5000,
       hideProgressBar: false,
@@ -57,13 +56,10 @@ const SignUp = (props) => {
     });
   };
   const [loading, setLoading] = useState(false);
-
-  
-  
-
+  const [showOTP, setShowOTP] = useState(false);
+  const [mailValid,setMailValid]=useState(true)
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [value, setValue] = useState("");
-  const [otp, setOtp] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [confirmObj, setConfirmObj] = useState("");
 
@@ -78,10 +74,10 @@ const SignUp = (props) => {
     password: "",
     confirmPassword: "",
     roll: "",
-    batch: "1",
+    semester: "",
   });
 
-  const { firstName, lastName, email, password, confirmPassword, roll, batch } =
+  const { firstName, lastName, email, password, confirmPassword, roll, semester } =
     formData;
 
   const formChange = (e) => {
@@ -98,34 +94,36 @@ const SignUp = (props) => {
 
   const auth = getAuth();
 
+  const sendOTP = () => {
+    setShowOTP(true);
+  };
+
   const onSubmit = async (e) => {
     e.preventDefault();
+    if(!mailValid){
+      toastifyFailure("Enter a valid GCT Email address")
+      return
+    }
     try {
-     setLoading(true)
-      const userCredentials = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      
+      setLoading(true);
+
       const response = await axios.post(`${api}/auth/local/register`, {
         name: firstName + " " + lastName,
         username: firstName + " " + lastName,
         email: email,
         password: password,
         roll,
-        batch: +batch,
-        userRole:"student"
+        semester: semester,
+        userRole: "student",
       });
-      toastifySuccess();
-      setLoading(false)
-      props.showlogin()
-      
+      toastifySuccess("Successfully SignedUp !!");
+      setLoading(false);
+      props.showlogin();
     } catch (error) {
-      setLoading(false)
+      setLoading(false);
 
       console.log(error);
-      toastifyFailure();
+      toastifyFailure(error.message);
     }
   };
 
@@ -165,13 +163,18 @@ const SignUp = (props) => {
     }
   };
 
-  return (
+  return !showOTP ? (
     <div className="loginForm lg:w-[50%] w-full  h-full">
-      <form onSubmit={onSubmit} className="w-full lg:h-[95%]  flex flex-col justify-center">
+      <form
+        onSubmit={onSubmit}
+        className="w-full lg:h-[95%]  flex flex-col justify-center"
+
+
         
-      <div className="flex justify-between lg:h-[12%] lg:mb-[2%]">
+      >
+        <div className="flex justify-between lg:h-[12%] lg:mb-[2%]">
           <div className="w-[49.5%]  h-full">
-          <UserOutlined className="absolute lg:ml-[2rem] ml-[1rem] mt-[1rem] text-lg text-gray-600" />
+            <UserOutlined className="absolute lg:ml-[2rem] ml-[1rem] mt-[1rem] text-lg text-gray-600" />
             <input
               id="firstName"
               placeholder="First Name"
@@ -184,7 +187,7 @@ const SignUp = (props) => {
             />
           </div>
           <div className="w-[49.5%] inline-block h-full">
-          <UserOutlined className="absolute lg:ml-[2rem] ml-[1rem] mt-[1rem] text-lg text-gray-600" />
+            <UserOutlined className="absolute lg:ml-[2rem] ml-[1rem] mt-[1rem] text-lg text-gray-600" />
             <input
               id="lastName"
               placeholder="Last Name"
@@ -216,30 +219,33 @@ const SignUp = (props) => {
         </div>
 
         <div className="w-full lg:h-[12%] lg:mb-[2%]">
-        <MailOutlined className="absolute lg:ml-[2rem] ml-[1rem] mt-[1.1rem] text-lg text-gray-600" />
+          <MailOutlined className="absolute lg:ml-[2rem] ml-[1rem] mt-[1.1rem] text-lg text-gray-600" />
           <input
             id="email"
             value={email}
             name="Email"
-            placeholder="Enter Your Email"
-            className="lg:pl-[4rem] pl-[2.8rem]  py-3 block border-2  border-violet-700 focus:border-green-500 mb-[1rem] authip w-full h-full"
+            placeholder="Enter a valid GCT Email address"
+            className={`lg:pl-[4rem] pl-[2.8rem]  py-3 block border-2   ${mailValid?"border-violet-700":"border-red-500"} focus:${mailValid?"border-green-500":"border-red-500"} mb-[1rem] authip w-full h-full`}
             style={{ fontSize: "1.1rem" }}
-            onChange={formChange}
+            onChange={(e)=>{
+              formChange(e)
+              setMailValid(e.target.value.includes("@gct.ac.in"))
+            }}
             required
           />
         </div>
         <div className=" h-0 flex justify-end pr-[2rem] ">
           {!showPassword ? (
             <AiFillEye
-            className="text-[1.5rem] text-violet-800 relative lg:top-[1.3rem] top-[1rem] cursor-pointer"
-            onClick={() => {
+              className="text-[1.5rem] text-violet-800 relative lg:top-[1.3rem] top-[1rem] cursor-pointer"
+              onClick={() => {
                 setShowPassword((prev) => !prev);
               }}
             />
           ) : (
             <AiFillEyeInvisible
-            className="text-[1.5rem] text-violet-800 relative lg:top-[1.3rem] top-[1rem] cursor-pointer"
-            onClick={() => {
+              className="text-[1.5rem] text-violet-800 relative lg:top-[1.3rem] top-[1rem] cursor-pointer"
+              onClick={() => {
                 setShowPassword((prev) => !prev);
               }}
             />
@@ -261,44 +267,28 @@ const SignUp = (props) => {
           />
         </div>
         <div className="w-full lg:h-[12%] lg:mb-[2%]">
-          {/* <FontAwesomeIcon
-              icon={faCheck}
-              className="absolute ml-[2rem] mt-[1.7rem] text-xl text-red-600"
-              style={isEqual ? { color: "green" } : {}}
-            />
-            <input
-              type="password"
-              id="confirmPassword"
-              value={confirmPassword}
-              placeholder="Confirm Password"
-              className="pl-[4rem] py-5 block border-2  border-violet-700 focus:border-green-500 authip w-[41.4rem]"
-              style={{
-                fontSize: "1.1rem",
-                border: isEqual ? "" : "2px solid red",
-              }}
-              onChange={formChange}
-              required
-            />
-            <p
-              className="ml-10 mt-3 text-red-600"
-              style={{ visibility: isEqual ? "hidden" : "visible" }}
-            >
-              Passwords don't match
-            </p> */}
           <GrGroup className="absolute lg:ml-[2rem] ml-[1rem] mt-[1rem] text-lg text-gray-300" />
           <div className=" h-0 flex justify-end pr-[2rem]">
             <DownOutlined className="text-[1.3rem] text-violet-800 relative top-[1.4rem] cursor-pointer" />
           </div>
           <select
-            id="batch"
+            id="semester"
             className=" custom-select py-3 authip border-2  border-violet-700 focus:border-green-500 text-gray-500 text-sm  focus:ring-blue-500   lg:pl-[4rem] pl-[2.8rem]   dark:focus:ring-blue-500 dark:focus:border-blue-500 inline w-full h-full"
             style={{ fontSize: "1.1rem" }}
             onChange={formChange}
+            required={true}
           >
-            <option selected value="1">
-              Batch 1
+            <option  hidden value="">
+              Select semester
             </option>
-            <option value="2">Batch 2</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
           </select>
         </div>
         <div
@@ -306,23 +296,34 @@ const SignUp = (props) => {
           style={{ justifyContent: "flex-start" }}
         >
           <button
-          disabled={loading}
+            disabled={loading}
             className={`loginButton font-bold text-xl text-white mr-4 py-[1.5rem] lg:w-[15rem] w-[9rem] ${
               loading ? "bg-gray-400" : "bg-violet-500"
             } transition-all duration-300 ease-in-out`}
           >
-              {loading ? <p className="lg:text-xl text-sm">SIGNING UP</p> : <p className="lg:text-xl text-sm">SIGN UP</p>}
+            {loading ? (
+              <p className="lg:text-xl text-sm">SIGNING UP</p>
+            ) : (
+              <p className="lg:text-xl text-sm">SIGN UP</p>
+            )}
           </button>
           <p
-              className="fgPass text-lg  hover:text-violet-700 transition-all duration-150 ease-in-out cursor-pointer"
-              onClick={props.click}
-            >
-              Register as Faculty
-            </p>
+            className="fgPass text-lg  hover:text-violet-700 transition-all duration-150 ease-in-out cursor-pointer"
+            onClick={props.click}
+          >
+            Register as Faculty
+          </p>
         </div>
         <ToastContainer />
       </form>
     </div>
+  ) : (
+    <Verify
+      otp={Math.floor(Math.random() * 6000000)}
+      email={email}
+      back={() => setShowOTP(false)}
+      submit={onSubmit}
+    />
   );
 };
 export default SignUp;

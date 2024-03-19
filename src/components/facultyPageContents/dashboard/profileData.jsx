@@ -10,8 +10,9 @@ const ProfileData = () => {
     const navigate = useNavigate()
     const { setKeys, user } = useContext(userContext)
     const cover = user ? <div className="relative">
-        <img src={bgImg} className="w-full h-[11rem]" />
-        <div className="flex flex-col justify-center items-center absolute top-[0.5rem] left-[4.2rem]">
+        {/* <img src={bgImg} className="w-full h-[11rem]" /> */}
+        <div className="w-full bg-black h-[11rem] rounded-t-md"></div>
+        <div className="flex flex-col justify-center items-center absolute top-[0.5rem] left-[6.9rem]">
             <img src={userImg} className="w-[6rem]" />
             <p className="text-xl font-bold text-white mt-1">{user.username}</p>
             <p className="text-sm  text-white mt-1">{user.email}</p>
@@ -20,7 +21,6 @@ const ProfileData = () => {
             <div className="absolute top-3 right-3 rounded-full w-[2rem] h-[2rem] flex items-center justify-center bg-white border cursor-pointer hover:bg-gray-100 transition-all duration-200 ease-in-out" onClick={() => {
                 setKeys(["/profile"])
                 navigate("/profile")
-
             }}>
                 <FontAwesomeIcon icon={faPencil} className="w-[1rem]" />
             </div>
@@ -34,9 +34,7 @@ const ProfileData = () => {
     ]
 
     return user ? <div>
-        <Card cover={cover} style={{
-            width: 300,
-        }}>
+        <Card cover={cover}  className="border-2">
             <div className="flex flex-col">
                 {userData.map((user) => <div className="flex justify-between">
                     <p className="text-lg font-semibold text-gray-800">{user.key}</p>

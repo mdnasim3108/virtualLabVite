@@ -2,7 +2,6 @@ import Login from "./login";
 import loginImg from "../../assets/loginCartoon.png";
 import SignUp from "./signUp";
 import { useState, useEffect } from "react";
-import Logo from "../../assets/Netzero.jpg";
 import gctLogo from "../../assets/Government_College_of_Technology,_Coimbatore_logo.png";
 import vlabImg from "../../assets/vlab.png";
 import { Player } from "@lottiefiles/react-lottie-player";
@@ -87,11 +86,11 @@ const Auth = (props) => {
         return;
       }
       setLoading(true);
-      const userCredentials = await createUserWithEmailAndPassword(
-        auth,
-        Email,
-        Password
-      );
+      // const userCredentials = await createUserWithEmailAndPassword(
+      //   auth,
+      //   Email,
+      //   Password
+      // );
       console.log(userCredentials);
       const response = await axios.post(`${api}/auth/local/register`, {
         name: fName + " " + lName,

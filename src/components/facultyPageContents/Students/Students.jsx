@@ -5,7 +5,7 @@ import { useNavigate } from "react-router";
 import StudentDetail from "./studentDetail";
 const Students = () => {
   const navigate = useNavigate();
-  const { students, submissionsData, experiments } = useContext(userContext);
+  const { students, submissionsData, experiments,UserSelectedLab } = useContext(userContext);
   const [studentData, setStudentData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedData, setSelectedData] = useState({
@@ -24,7 +24,8 @@ const Students = () => {
   };
   useEffect(() => {
     if (students.length) {
-      const studentsInfo = students.map((student) => {
+      
+      const studentsInfo = students.filter(student=>student.semester===UserSelectedLab.semester).map((student) => {
         return {
           key: student.id,
           studentId: student.id,

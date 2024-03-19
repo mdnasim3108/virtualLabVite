@@ -18,7 +18,10 @@ const ContextProvider = (props) => {
   const [submission, setSubmission] = useState({ id: "", Experiments: [] });
   const [students, setStudents] = useState([]);
   const [announcements, setAnnouncements] = useState([]);
-  const [submissionsData,setSubmissionsData]=useState([])
+  const [submissionsData, setSubmissionsData] = useState([]);
+  const [selectedLab, setSelectedLab] = useState({});
+  const [labs, setLabs] = useState([]);
+  const [UserSelectedLab, setUserSelectedLab] = useState(null);
   const resetProcess = () => {
     setUser(null);
     setExperiments([]);
@@ -37,30 +40,30 @@ const ContextProvider = (props) => {
       const index = progress.findIndex((el) => selected.no === +el.experiment);
       if (index >= 0) setSelectedProgressId(progress[index].codeId);
     }
-  }, [selected, progress]);
+  }, [selected, progress]);  
 
+  
+  
   useEffect(() => {
-    if (experiments.length) {
-      // const pendingExperiments = experiments.filter(
-      //   (experiment) =>
-      //     !submission.Experiments.map((el) => el.ExpNo).includes(
-      //       +experiment.expNo
-      //     )
-      // );
-      setSelected({
-        name: experiments[0].expTitle,
-        no: experiments[0].expNo,
-      });
+    if (experiments.length && UserSelectedLab) {
+      const UserSelectedLabExperiment = experiments.find(
+        (exp) => exp.lab === UserSelectedLab.code
+      );
+      if (UserSelectedLabExperiment)
+        setSelected({
+          name: UserSelectedLabExperiment.expTitle,
+          no: +UserSelectedLabExperiment.expNo,
+        });
+      else setSelected({});
     }
-  }, [experiments, submission]);
+  }, [UserSelectedLab, experiments]);
 
   const progressUpdateHandler = async (no, codeId) => {
     let updated = [...progress.progressData];
     if (progress.progressData.length) {
-      const id = updated.findIndex((el) => +el.experiment === no);
+      const id = updated.findIndex((el) => +el.experiment === no && el.labCode==UserSelectedLab.code);
       if (id >= 0) updated[id] = { ...updated[id], codeId };
-      else updated = [...updated, { experiment: no.toString(), codeId }];
-      console.log(updated);
+      else updated = [...updated, { experiment: no.toString(), codeId,labCode:UserSelectedLab.code }];
       const res = await axios.put(
         `${api}/progresses/${progress.id}?populate=*`,
         { data: { progress: updated } }
@@ -79,6 +82,7 @@ const ContextProvider = (props) => {
               {
                 experiment: no.toString(),
                 codeId,
+                labCode:UserSelectedLab.code
               },
             ],
           },
@@ -93,20 +97,19 @@ const ContextProvider = (props) => {
     }
   };
 
-  const fetchSubmissionsData=()=>{
-    axios.get(`${api}/submissions?populate=*`).then((res) =>{
-    setSubmissionsData(
-      res.data.data.map((el) => {
-        return {
-          id: el.id,
-          roll: el.attributes.roll,
-          finishedExperiments: el.attributes.Experiments,
-        };
-      })
-    )
-    }
-    ) 
-  }
+  const fetchSubmissionsData = () => {
+    axios.get(`${api}/submissions?populate=*`).then((res) => {
+      setSubmissionsData(
+        res.data.data.map((el) => {
+          return {
+            id: el.id,
+            roll: el.attributes.roll,
+            finishedExperiments: el.attributes.Experiments,
+          };
+        })
+      );
+    });
+  };
   const fetchProgress = async (roll) => {
     const res = await axios.get(
       `${api}/progresses?filters[roll][$eqi]=${roll}&populate=*`
@@ -138,7 +141,7 @@ const ContextProvider = (props) => {
     axios
       .get(`${api}/users?filters[userRole][$eqi]=student&populate=*`)
       .then((res) => {
-        console.log(res.data)
+        console.log(res.data);
         setStudents(res.data);
       });
   };
@@ -153,6 +156,7 @@ const ContextProvider = (props) => {
             expTitle: exp.attributes.Experiment_Name,
             expDesc: exp.attributes.Description,
             Due: exp.attributes.Due_Date,
+            lab: exp.attributes.labCode,
           };
         })
       )
@@ -170,10 +174,48 @@ const ContextProvider = (props) => {
               description: announcement.attributes.description,
               AnnouncedDate: announcement.attributes.date,
               facultyName: announcement.attributes.facultyName,
+              lab: announcement.attributes.labCode,
             };
           })
         );
       }
+    });
+  };
+
+  const fetchLabs = (semester = null) => {
+    axios.get(`${api}/labs?populate=*`).then((res) => {
+      const labData = !semester
+        ? res.data.data.map((lab) => {
+            return {
+              faculty: lab.attributes.Faculty,
+              name: lab.attributes.Name,
+              semester: lab.attributes.Semester,
+              labCode: lab.attributes.labCode,
+              image: lab.attributes.image.data.attributes.url,
+            };
+          })
+        : res.data.data
+            .map((lab) => {
+              return {
+                faculty: lab.attributes.Faculty,
+                name: lab.attributes.Name,
+                semester: lab.attributes.Semester,
+                labCode: lab.attributes.labCode,
+                image: lab.attributes.image.data.attributes.url,
+              };
+            })
+            .filter((lab) => lab.semester == semester);
+
+      setLabs(labData);
+      setUserSelectedLab({
+        code: labData[0].labCode,
+        semester: labData[0].semester,
+        img: labData[0].image,
+        name: labData[0].name,
+      });
+
+      const availableLabs = labData.filter((lab) => lab.semester === semester);
+      setSelectedLab(availableLabs[0]);
     });
   };
 
@@ -183,16 +225,15 @@ const ContextProvider = (props) => {
     );
     fetchExperiments();
     fetchAnnouncements();
-    console.log(res.data);
     setUser(res.data[0]);
-    console.log(res.data[0]);
+    fetchSubmissionsData();
+    fetchLabs(res.data[0].semester);
+    fetchStudents();
     if (!(res.data[0].userRole === "Faculty")) {
       fetchProgress(res.data[0].roll);
       fetchSubmitted(res.data[0].roll);
-    } else {
-      fetchSubmissionsData()
-      fetchStudents();
     }
+      
   };
 
   const contextValues = {
@@ -216,7 +257,13 @@ const ContextProvider = (props) => {
     setAnnouncements,
     resetProcess,
     submissionsData,
-    setSubmissionsData
+    setSubmissionsData,
+    labs,
+    selectedLab,
+    setSelectedLab,
+    UserSelectedLab,
+    setUserSelectedLab,
+    fetchLabs,
   };
 
   useEffect(() => {

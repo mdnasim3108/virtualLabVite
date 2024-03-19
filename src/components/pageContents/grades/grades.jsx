@@ -5,17 +5,18 @@ import userContext from "../../../contextStore/context";
 import { api } from "../../../constants";
 const Grades=()=>{
     const [gradings,setGradings]=useState([])
-    const {user,experiments}=useContext(userContext)
+    const {user,experiments,UserSelectedLab}=useContext(userContext)
   
     useEffect(()=>{
+      if(experiments.length && UserSelectedLab)
       axios.get(`${api}/submissions?filters[roll][$eqi]=${user.roll}&populate=*`).then((res)=>setGradings(
-        res.data.data[0]?.attributes.Experiments.filter(obj => obj.output).map((exp)=>{
-          const index=experiments.findIndex(experiment=>experiment.expNo==exp.ExpNo)
-          const experimentName=experiments[index].expTitle
+        res.data.data[0]?.attributes.Experiments.filter(obj => obj.output).filter(exp=>exp.lab===UserSelectedLab.code).map((exp)=>{
+          const filteredExps=experiments.filter(exp=>exp.lab===UserSelectedLab.code)
+          const {expTitle} = filteredExps.find(experiment=>experiment.lab===UserSelectedLab.code && experiment.expNo==exp.ExpNo)
           return {
             key:exp.id,
             Experiment:exp.ExpNo,
-            Experiment_Name:experimentName,
+            Experiment_Name:expTitle,
             Observation:exp.observation,
             Output:exp.output,
             Viva:exp.viva
@@ -23,7 +24,7 @@ const Grades=()=>{
         
         })
       ))
-    },[])
+    },[experiments,UserSelectedLab])
    
     const columns = [
         {

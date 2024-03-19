@@ -3,16 +3,12 @@ import axios from "axios";
 import { useState, useEffect, useContext } from "react";
 import { api as strapiApi } from "../../../constants";
 import userContext from "../../../contextStore/context";
-import useHttp from "../../../hooks/use-http";
 import { useNavigate } from "react-router";
 const Experiments = () => {
   const navigate = useNavigate();
-  const { setExperiments, experiments, setKeys, setSelected, progress } =
+  const { setExperiments, experiments,UserSelectedLab  } =
     useContext(userContext);
-  const { loading, data, error } = useHttp({
-    url: `${strapiApi}/experiments`,
-    method: "GET",
-  });
+  
   const [api, contextHolder] = notification.useNotification();
   const openNotificationWithIcon = (type, message, description) => {
     api[type]({
@@ -27,7 +23,12 @@ const Experiments = () => {
     Description: "",
     Due_Date: "",
   });
-
+  const [filteredExperiments, setFilteredExperiments] = useState([])
+  useEffect(()=>{
+      if(UserSelectedLab){
+        setFilteredExperiments(experiments.filter(experiment=>experiment.lab===UserSelectedLab.code))
+      }
+  },[UserSelectedLab,experiments])
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -52,7 +53,7 @@ const Experiments = () => {
       );
       return;
     }
-    axios.post(`${strapiApi}/experiments`, { data: formData }).then((res) => {
+    axios.post(`${strapiApi}/experiments`, { data: {...formData,labCode:UserSelectedLab.code} }).then((res) => {
       setExperiments([
         ...experiments,
         {
@@ -61,6 +62,7 @@ const Experiments = () => {
           expNo: res.data.data.attributes.ExperimentNo,
           Due: res.data.data.attributes.Due_Date,
           expDesc: res.data.data.attributes.Description,
+          lab:res.data.data.attributes.labCode
         },
       ]);
       openNotificationWithIcon(
@@ -203,7 +205,7 @@ const Experiments = () => {
       </Modal>
       <div className="w-full h-screen pt-[1rem]  bg-gray-100 text-center">
         <Table
-          dataSource={experiments}
+          dataSource={filteredExperiments}
           columns={columns}
           className="w-[95%] mx-auto"
           pagination={{

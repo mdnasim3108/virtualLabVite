@@ -4,18 +4,21 @@ import { toast } from "react-toastify";
 import { app } from "../../firebase-config";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { api } from "../../constants";
+import axios from "axios";
 const ForgotForm = (props) => {
   const auth = getAuth(app);
   const [email, setEmail] = useState("");
   const forgotSubmitHandler = async (e) => {
     e.preventDefault();
     try {
-      const userCredentials = await sendPasswordResetEmail(auth, email);
-      toast.success("password reset link sent to the registered email");
-      props.sent()
-      // setValue({ value: email, isValid: true })
-    } catch {
-      toast.error("The email is not registered!");
+      axios.post(`${api}/auth/forgot-password`,{email}).then((res) => {
+        toast.success("password reset link sent to the registered email");
+        props.sent();
+      });
+
+    } catch(er) {
+      toast.error(er.message);
     }
   };
   return (
@@ -33,18 +36,21 @@ const ForgotForm = (props) => {
             onChange={(e) => setEmail(e.target.value)}
           />
           <div className="flex mt-4 items-center">
+            <button
+              type="submit"
+              className="bg-violet-700 lg:p-4 p-2 rounded  lg:text-xl text-lg text-white"
+            >
+              Send password reset link
+            </button>
 
-          <button
-            type="submit"
-            className="bg-violet-700 lg:p-4 p-2 rounded  lg:text-xl text-lg text-white"
-          >
-            Send password reset link
-          </button>
-
-          <p className="text-lg text-gray-400 cursor-pointer" onClick={props.back}><FontAwesomeIcon icon={faArrowLeft} className="w-[2rem]"/>Back</p>
-
+            <p
+              className="text-lg text-gray-400 cursor-pointer"
+              onClick={props.back}
+            >
+              <FontAwesomeIcon icon={faArrowLeft} className="w-[2rem]" />
+              Back
+            </p>
           </div>
-          
         </form>
       </div>
     </div>

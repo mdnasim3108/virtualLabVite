@@ -7,8 +7,8 @@ import axios from "axios";
 import { api } from "../../../constants";
 const FacultyAnnouncements = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { user, announcements, setAnnouncements } = useContext(userContext);
-
+  const { user, announcements, setAnnouncements,UserSelectedLab } = useContext(userContext);
+  const [announcementData,setAnnouncementData]=useState([])
   const [updateId, setUpdateId] = useState(null);
   const showModal = () => {
     setIsModalOpen(true);
@@ -37,32 +37,36 @@ const FacultyAnnouncements = () => {
   const changeHandler = (e) => {
     setData({ ...formData, [e.target.id]: e.target.value });
   };
-
-  const announcementsData = announcements.map((announcement) => {
-    return {
-      ...announcement,
-      description:
-        announcement.description.slice(0, 75) +
-        (announcement.description.length > 80 ? "..." : ""),
-      Action: (
-        <p
-          className="underline cursor-pointer"
-          onClick={() => {
-            console.log(announcement);
-            setUpdateId(announcement.key);
-            showModal();
-            setData({
-              Description: announcement.description,
-              Subject: announcement.subject,
-            });
-          }}
-        >
-          {" "}
-          view or edit
-        </p>
-      ),
-    };
-  });
+  // console.log(UserSelectedLab)
+  useEffect(()=>{
+    if(UserSelectedLab){
+      setAnnouncementData(announcements.filter(announcement=>announcement.lab===UserSelectedLab.code).map((announcement) => {
+        return {
+          ...announcement,
+          description:
+            announcement.description.slice(0, 75) +
+            (announcement.description.length > 80 ? "..." : ""),
+          Action: (
+            <p
+              className="underline cursor-pointer"
+              onClick={() => {
+                console.log(announcement);
+                setUpdateId(announcement.key);
+                showModal();
+                setData({
+                  Description: announcement.description,
+                  Subject: announcement.subject,
+                });
+              }}
+            >
+              {" "}
+              view or edit
+            </p>
+          ),
+        };
+      }))
+    }
+  },[UserSelectedLab,announcements])
 
   const updateHanlder = () => {
     axios
@@ -96,6 +100,7 @@ const FacultyAnnouncements = () => {
           subject: formData.Subject,
           description: formData.Description,
           date: new Date(),
+          labCode:UserSelectedLab.code
         },
       })
       .then((res) => {
@@ -107,6 +112,7 @@ const FacultyAnnouncements = () => {
             subject: res.data.data.attributes.subject,
             description: res.data.data.attributes.description,
             AnnouncedDate: res.data.data.attributes.date,
+            lab:res.data.data.attributes.labCode
           },
         ]);
         handleCancel();
@@ -172,7 +178,7 @@ const FacultyAnnouncements = () => {
   return (
     <div className="mt-10">
       <Modal
-        title="Announce Something..."
+        title={"Announce Something for "+UserSelectedLab?.name}
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
@@ -188,7 +194,7 @@ const FacultyAnnouncements = () => {
         {modalContent}
       </Modal>
       <Table
-        dataSource={announcementsData}
+        dataSource={announcementData}
         columns={columns}
         className="w-[95%] mx-auto relative bottom-6"
         pagination={{

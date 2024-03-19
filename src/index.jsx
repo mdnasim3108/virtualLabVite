@@ -26,10 +26,21 @@ import TeacherExperiments from "./components/facultyPageContents/teacherExperime
 import PrivateRoute from "./privateRoute";
 import Students from "./components/facultyPageContents/Students/Students";
 import FacultyAnnouncements from "./components/facultyPageContents/announcements/Announcements";
+import FacultyGradings from "./components/facultyPageContents/facultyGradings/facultyGradings";
+import { Resetpass } from "./components/authentication/resetPassword/resetPass";
+import ResetSuccessfull from "./components/authentication/resetPassword/resetSucess";
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Auth />,
+  },
+  {
+    path: "/resetPassword",
+    element: <Resetpass/>,
+  },
+  {
+    path: "/resetsuccessful",
+    element: <ResetSuccessfull/>,
   },
   {
     path: "/facultyDashboard",
@@ -102,7 +113,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/teachers",
+    path: "/faculties",
     element: (
       <PrivateRoute>
       <HomeLayout>
@@ -177,6 +188,16 @@ const router = createBrowserRouter([
       <PrivateRoute>
       <HomeLayout>
         < FacultyAnnouncements />
+      </HomeLayout>
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/FacultyGradings",
+    element: (
+      <PrivateRoute>
+      <HomeLayout>
+        <FacultyGradings />
       </HomeLayout>
       </PrivateRoute>
     ),

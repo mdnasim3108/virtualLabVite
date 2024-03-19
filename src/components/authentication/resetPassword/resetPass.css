@@ -1,0 +1,314 @@
+.loginpage{
+    /* background-image: url("../../assets/Login-Bg.png"); */
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 100vh;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mulish);
+}
+
+
+.custom-checkbox:checked {
+    background-color: blue; /* New border color when checked */
+    accent-color: var(--orange)/* New background color when checked */
+}
+
+
+
+.logincont{
+    margin-top: 100px;
+    max-width: 480px;
+    /* min-width: 90%; */
+    width: 80%;
+    min-height: 570px;
+    /* max-height: 620px; */
+    /* height: 70vh; */
+    background-color: white;
+    box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.1);
+    border-radius: 40px;
+    padding: 20px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    margin-bottom: 60px;
+    font-family: var(--font-poppins);
+}
+
+.logincont h2{
+    font-size: 38px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.loginoption{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: 0px;
+    margin-bottom: 20px;
+}
+.loginitem{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.loginitem label{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.logininput{
+    padding-right: 20px;
+    padding-left: 20px;
+    font-size: 16px;
+    height: 60px;
+    border-radius: 8px;
+    border-color: rgb(205, 205, 205);
+    border-style: solid;
+    margin-top: 10px;
+}
+
+.inputborderred{
+    border-color: rgb(255, 40, 40);
+
+}
+
+.loginitem input:focus{
+    outline: none !important;
+    border: solid var(--orange);
+}
+
+.eyeicons{
+    position: relative;
+    align-self: flex-end;
+    bottom: 40px;
+    right: 20px;
+    cursor: pointer;
+}
+
+.loginoptions{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 0px;
+    margin-bottom: 20px;
+}
+
+.loginremember{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 130px;
+}
+
+.signupremember{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* width: ; */
+}
+
+.signupremember label{
+    font-size: 12px;
+    margin-left: 5px;
+}
+
+
+.loginoptions > span:hover{
+    cursor: pointer;
+    color: var(--orange);
+}
+
+.loginsignbtn{
+    width: 100%;
+    border: none;
+    padding: 14px 40px;
+    border-radius: 20px;
+    align-self: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: var(--orange);
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    font-family: var(--font-poppins);
+}
+
+.noaccout{
+    align-self: center;
+    text-align: center;
+}
+
+.oauths{
+    display: flex;
+    width: 90%;
+    align-items: center;
+    justify-content: space-evenly;
+    align-self: center;
+    margin-top: 20px;
+}
+
+.oauths  img{
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+}
+
+.loginimgpos{
+    position: absolute;
+    right: 150px;
+}
+
+.passerr{
+    position: relative;
+    bottom: 10px;
+    color: #ff0000;
+    cursor: pointer;
+}
+
+.passerr > span{
+    margin-left: 3px;
+    font-size: 14px;
+}
+
+.passcloud{
+    position: absolute;
+    width: 230px;
+    height: 100px;
+    background-color: white;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    bottom: -100px;
+    left: -100px;
+    padding: 10px;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    border-radius: 20px;
+    z-index: 100;
+}
+
+.passcloudinner{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.loginsignbtn{
+    width: 100%;
+    border: 2px solid black;
+    padding: 14px 40px;
+    border-radius: 20px;
+    align-self: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: var(--orange);
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    font-family: var(--font-poppins);
+}
+
+.passclouditem{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: 14px;
+}
+
+.passerr:hover ~ .passcloud{
+    display: flex;
+}
+
+.passwordsignupinput:focus ~ .passcloud{
+    display: flex;
+}
+
+
+@media only screen and (max-width:1440px)
+{
+    .loginimgpos{
+        right: 90px;
+    }
+}
+
+@media only screen and (max-width:1250px)
+{
+    .loginimgpos{
+        display: none;
+    }
+}
+
+@media only screen and (max-width:460px) {
+    .logincont{
+        padding: 30px 30px 30px 30px;
+        width: 90%;
+    }
+    .loginsignbtn{
+        padding: 14px 20px;
+        font-size: 20px;
+        
+    }
+
+    .loginitem label {
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    .loginoptions{
+        margin-top: 5px;
+        margin-bottom: 0px;
+    }
+
+    .signupremember label{
+        font-size: 12px;
+        margin-left: 5px;
+    }
+    .logincont h2{
+        font-size: 30px;
+    }
+    .passcloud{
+        position: absolute;
+        bottom: -100px;
+        left: -20px;
+      
+    }
+    
+}
+
+.verificationbox{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    flex-direction: column;
+    background-color: #ffffff;
+    border-radius: 20px;
+}
+
+.verificationbox h3{
+    margin-bottom: 10px;
+}
+
+.verificationbox p{
+    text-align: center;
+    font-size: 14px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.orloginwith{
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}

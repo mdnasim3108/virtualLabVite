@@ -38,7 +38,7 @@ const ProfileData = () => {
             width: 300,
         }}>
             <div className="flex flex-col">
-                {userData.map((user) => <div className="flex justify-between">
+                {userData.map((user) => <div className="flex justify-between" key={user.key}>
                     <p className="text-lg font-semibold text-gray-800">{user.key}</p>
                     <p className="text-lg text-gray-500">{user.value}</p>
                 </div>)}

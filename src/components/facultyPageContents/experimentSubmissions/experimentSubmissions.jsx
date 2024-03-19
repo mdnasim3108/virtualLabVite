@@ -6,8 +6,17 @@ import userContext from "../../../contextStore/context";
 import { DownOutlined } from "@ant-design/icons";
 import { jsPDF } from "jspdf";
 const ExperimentSubmissions = () => {
-  const { experiments, selected, setSelected, students,submissionsData:submission,setSubmissionsData } =
-    useContext(userContext);
+  const {
+    experiments,
+    selected,
+    setSelected,
+    students,
+    submissionsData: submission,
+    setSubmissionsData,
+    UserSelectedLab,
+    labs,
+  } = useContext(userContext);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedData, setSelectedData] = useState({
     roll: "",
@@ -15,28 +24,37 @@ const ExperimentSubmissions = () => {
     experiment: "",
     submissionId: "",
   });
+  const [items, setItems] = useState([]);
   const [data, setData] = useState([]);
-  // const [submission, setSubmission] = useState([]);
   const [formData, setFormData] = useState({
     observation: "",
     output: "",
     viva: "",
   });
-  const items = experiments.map((exp) => {
-    return {
-      key: exp.key,
-      label: (
-        <p
-          onClick={() => {
-            setSelected({ name: exp.expTitle, no: +exp.expNo });
-          }}
-        >
-          {exp.expTitle}
-        </p>
-      ),
-    };
-  });
-  
+  useEffect(() => {
+    if (UserSelectedLab) {
+      const filteredExperiments = experiments.filter(
+        (experiment) => experiment.lab === UserSelectedLab.code
+      );
+      setItems(
+        filteredExperiments.map((exp) => {
+          return {
+            key: exp.key,
+            label: (
+              <p
+                onClick={() => {
+                  setSelected({ name: exp.expTitle, no: +exp.expNo });
+                }}
+              >
+                {exp.expTitle}
+              </p>
+            ),
+          };
+        })
+      );
+    }
+  }, [UserSelectedLab]);
+
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -44,6 +62,7 @@ const ExperimentSubmissions = () => {
     setIsModalOpen(false);
   };
   const handleCancel = () => {
+    setFormData({ observation: "", output: "", viva: "" });
     setIsModalOpen(false);
   };
   const columns = [
@@ -111,24 +130,17 @@ const ExperimentSubmissions = () => {
     setFormData({ ...formData, [e.target.id]: +e.target.value });
   };
   const gradingsHandler = () => {
-    console.log(formData);
-    setFormData({
-      observation: "",
-      output: "",
-      viva: "",
-    });
     const studentIndex = submission.findIndex(
       (el) => el.id === selectedData.submissionId
     );
-    const data = submission[studentIndex].finishedExperiments;
-    const experimentIndex = data.findIndex((el) => el.ExpNo == selected.no);
+    const data = submission[studentIndex].finishedExperiments;  
+    const experimentIndex = data.findIndex((el) => el.ExpNo == selected.no && el.lab==UserSelectedLab.code);
     const updated = [...data];
     updated[experimentIndex] = {
       ...updated[experimentIndex],
       ...formData,
       total: formData.observation + formData.output + formData.viva,
     };
-    console.log(data);
     axios
       .put(`${api}/submissions/${selectedData.submissionId}?populate=*`, {
         data: { Experiments: updated },
@@ -203,12 +215,6 @@ const ExperimentSubmissions = () => {
   
     code:
     ${code}
-
-
-
-
-    
-
     output:
 
     ${output}
@@ -219,38 +225,37 @@ const ExperimentSubmissions = () => {
 
     doc.save(`${roll}.pdf`);
   };
-  // useEffect(() => {
-  //   axios.get(`${api}/submissions?populate=*`).then((res) =>
-  //     setSubmission(
-  //       res.data.data.map((el) => {
-  //         return {
-  //           id: el.id,
-  //           roll: el.attributes.roll,
-  //           finishedExperiments: el.attributes.Experiments,
-  //         };
-  //       })
-  //     )
-  //   );
-  // }, []);
 
   useEffect(() => {
-    if (submission.length && experiments.length) {
-      const completedStudents = submission.filter((el) =>
-        el.finishedExperiments.map((el) => el.ExpNo).includes(+selected.no)
-      );
-      console.log(submission);
-      console.log(selected.no);
+    if (
+      submission.length &&
+      experiments.length &&
+      students.length &&
+      UserSelectedLab
+    ) {
+      const completedStudents = submission
+        .filter((el) =>
+          el.finishedExperiments
+            .map((el) => el.lab)
+            .includes(UserSelectedLab.code)
+        )
+        .filter((el) =>
+          el.finishedExperiments.map((el) => el.ExpNo).includes(selected.no)
+        );
       if (completedStudents.length) {
         setData(
           completedStudents.map((el) => {
             const id = el.finishedExperiments.findIndex(
-              (el) => el.ExpNo == selected.no
+              (el) => el.ExpNo == selected.no && el.lab==UserSelectedLab.code
             );
             const exp = el.finishedExperiments[id];
-            const expIndex = experiments.findIndex(
+            const filteredExperiments = experiments.filter(
+              (exp) => exp.lab === UserSelectedLab.code
+            );
+            const expIndex = filteredExperiments.findIndex(
               (experiment) => experiment.expNo == selected.no
             );
-            const experimentData = experiments[expIndex];
+            const experimentData = filteredExperiments[expIndex];
             const studentId = students.findIndex(
               (student) => student.roll === el.roll
             );
@@ -259,10 +264,10 @@ const ExperimentSubmissions = () => {
               key: el.id,
               Roll: el.roll,
               Student_Name: studentData.username,
-              lastSub: exp.Submitted_Date,
-              status: exp.total ? "graded" : "unGraded",
+              lastSub: exp?.Submitted_Date,
+              status: exp?.total ? "graded" : "unGraded",
               timeliness:
-                new Date(exp.Submitted_Date) < new Date(experimentData.Due)
+                new Date(exp?.Submitted_Date) < new Date(experimentData.Due)
                   ? "timely"
                   : "overdue",
               Link: (
@@ -290,10 +295,13 @@ const ExperimentSubmissions = () => {
                       experiment: experimentData.expTitle,
                       submissionId: el.id,
                     });
+                    const { observation, output, viva } = exp;
+                    if (exp.observation)
+                      setFormData({ observation, output, viva });
                     showModal();
                   }}
                 >
-                  {exp.total ? "Update marks" : "Assign marks"}
+                  {exp?.total ? "Update marks" : "Assign marks"}
                 </Button>
               ),
             };
@@ -303,7 +311,7 @@ const ExperimentSubmissions = () => {
         setData(false);
       }
     }
-  }, [selected, submission, experiments]);
+  }, [selected, submission, experiments, UserSelectedLab]);
 
   return (
     <div className="flex flex-col justify-center items-center">

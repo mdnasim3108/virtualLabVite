@@ -50,35 +50,41 @@ const Login = (props) => {
 
   const formsubmitHandler = async (e) => {
     e.preventDefault();
-
+    if (window.outerWidth < 1024) {
+      toastifyFailure(
+        "Desktop Access Only,Please access the dashboard using a desktop Device."
+      );
+      return;
+    }
     if (formIvsValid) {
       setLoading(true);
       const auth = getAuth();
 
-      await signInWithEmailAndPassword(auth, email, password)
-        .then(async () => {
-          const res = await axios.get(
-            `${api}/users?filters[email][$eqi]=${email}&populate=*`
-          );
+      axios
+        .post(`${api}/auth/local`, {
+          identifier: email,
+          password,
+        })
+        .then((response) => {
           toastifySuccess();
           cookies.set("user", email, {
             path: "/",
             expires: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
           });
-          console.log(res.data);
           fetchUser();
           setLoading(false);
-          if(res.data[0].userRole=="student"){
+          if(response.data.user.userRole=="student"){
             navigate("/studentDashboard");
           }
           else{
             navigate("/facultyDashboard");
           }
-          
+          console.log("User profile", response.data.user);
+          console.log("User token", response.data.jwt);
         })
         .catch((error) => {
+          toast.error(error.message);
           setLoading(false);
-          toastifyFailure(error.message);
         });
     }
   };
@@ -113,7 +119,7 @@ const Login = (props) => {
   }, [emailIsValid, passIsValid]);
   return (
     <div className="logForm  lg:pr-[3rem] mt-8 lg:w-[50%] w-full">
-    <h1 className="text-4xl font-bold">Welcome Back!</h1>
+      <h1 className="text-4xl font-bold">Welcome Back!</h1>
       <h3
         className="text-xl mt-[1rem] font-semibold mb-[3rem]"
         style={{ color: "darkgray" }}
@@ -121,7 +127,7 @@ const Login = (props) => {
         Login to continue
       </h3>
       <form onSubmit={formsubmitHandler} autoComplete="off" className="">
-      <MailOutlined className="absolute lg:ml-[2rem] ml-[1rem] mt-[1.2rem] text-lg text-gray-600" />
+        <MailOutlined className="absolute lg:ml-[2rem] ml-[1rem] mt-[1.2rem] text-lg text-gray-600" />
         <input
           id="email"
           type="email"
@@ -188,7 +194,6 @@ const Login = (props) => {
           </p>
         </div>
       </form>
-     
     </div>
   );
 };
