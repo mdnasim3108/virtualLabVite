@@ -86,12 +86,6 @@ const Auth = (props) => {
         return;
       }
       setLoading(true);
-      // const userCredentials = await createUserWithEmailAndPassword(
-      //   auth,
-      //   Email,
-      //   Password
-      // );
-      console.log(userCredentials);
       const response = await axios.post(`${api}/auth/local/register`, {
         name: fName + " " + lName,
         username: fName + " " + lName,
